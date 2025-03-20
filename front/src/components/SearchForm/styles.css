@@ -1,0 +1,130 @@
+.search-form-container {
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    margin: 20px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+  }
+  
+  .search-form-title {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #34495e;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .form-group select,
+  .form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+  
+  .form-group select:hover,
+  .form-group input:hover {
+    border-color: #3498db;
+  }
+  
+  .form-group select:focus,
+  .form-group input:focus {
+    outline: none;
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.1);
+  }
+  
+  .form-group.error select,
+  .form-group.error input {
+    border-color: #e74c3c;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    position: absolute;
+    bottom: -20px;
+  }
+  
+  .submit-container {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .submit-button {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .submit-button:hover {
+    background: linear-gradient(to right, #2980b9, #2573a7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+  }
+  
+  .submit-button:active {
+    transform: translateY(0);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+  
+  /* Column organization */
+  .pickup-column,
+  .return-column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .search-form-container {
+      margin: 10px;
+      padding: 20px;
+    }
+  
+    .search-form-title {
+      font-size: 1.5rem;
+    }
+  
+    .form-grid {
+      gap: 15px;
+    }
+  }
