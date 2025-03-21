@@ -1,17 +1,17 @@
 import React from 'react';
+import SearchForm from './components/SearchForm';
 
 function App() {
+  const handleSearch = (searchData) => {
+    console.log("Search form data:", searchData);
+    alert("Search successful! Redirecting to available cars would happen here.");
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Welcome to My App</h1>
-      </header>
       <main>
-        <p>This is the main content of the app.</p>
+        <SearchForm onSearch={handleSearch} />
       </main>
-      <footer>
-        <p>© 2023 My App</p>
-      </footer>
     </div>
   );
 }
