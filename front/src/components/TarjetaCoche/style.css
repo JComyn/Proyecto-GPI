@@ -1,0 +1,77 @@
+.car-card-container {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.car-card-title {
+  font-size: 1.5rem;
+  color: #000000;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.car-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.car-card-section {
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.car-card-section h3 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.car-card-section p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.car-card-section ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.car-card-section ul li {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Centrar el botón */
+.car-card-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+  
+  /* Estilo del botón */
+.select-car-button {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 50px; /* Bordes redondeados */
+    padding: 10px 30px; /* Ajustar el tamaño del botón */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+  
+  /* Efecto hover */
+.select-car-button:hover {
+    background: linear-gradient(to right, #2980b9, #2573a7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+}
