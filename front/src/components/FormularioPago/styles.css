@@ -1,0 +1,102 @@
+.payment-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  .payment-card {
+    transition: all 0.3s ease;
+    background-color: #f9f9f9 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .payment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Título del formulario */
+  .payment-title {
+    color: #2c3e50 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .payment-subtitle {
+    color: #7f8c8d !important;
+    font-size: 0.9rem !important;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  /* Header del formulario */
+  .payment-header {
+    background: #3498db;
+    color: white;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .payment-header-title {
+    color: white !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+  }
+  
+  /* Estilo para los campos de formulario */
+  .payment-input {
+    margin-bottom: 16px !important;
+  }
+  
+  .payment-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #3498db !important;
+  }
+  
+  .payment-input .MuiInputLabel-root.Mui-focused {
+    color: #3498db !important;
+  }
+  
+  /* Estilo para el botón de pago - ahora usando las clases del SearchForm */
+  .submit-container {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .submit-button {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .submit-button:hover {
+    background: linear-gradient(to right, #2980b9, #2573a7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+  }
+  
+  .submit-button:active {
+    transform: translateY(0);
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 600px) {
+    .payment-container {
+      padding: 0 10px;
+    }
+    
+    .submit-button {
+      width: 100%;
+    }
+  }

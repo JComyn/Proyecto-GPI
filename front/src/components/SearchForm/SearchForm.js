@@ -7,13 +7,13 @@ import './styles.css';
 function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
     return (
       <div className="search-form-container">
-        <h2 className="search-form-title">Find Your Perfect Car</h2>
+        <h2 className="search-form-title">Encuentra tu Coche Perfecto</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
             {/* Pickup Column */}
             <div className="pickup-column">
               <div className="form-group">
-                <label htmlFor="pickupOffice">Pickup Office:</label>
+                <label htmlFor="pickupOffice">Oficina de Recogida:</label>
                 <select 
                   id="pickupOffice" 
                   name="pickupOffice" 
@@ -21,7 +21,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
                   onChange={handleChange}
                   className={errors.pickupOffice ? 'error' : ''}
                 >
-                  <option value="">Select pickup office</option>
+                  <option value="">Seleccione oficina de recogida</option>
                   {mockOffices.map(office => (
                     <option key={office.id} value={office.id}>{office.name}</option>
                   ))}
@@ -30,7 +30,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
               </div>
   
               <div className="form-group">
-                <label htmlFor="pickupDate">Pickup Date:</label>
+                <label htmlFor="pickupDate">Fecha de Recogida:</label>
                 <input 
                   type="date" 
                   id="pickupDate" 
@@ -43,7 +43,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
               </div>
   
               <div className="form-group">
-                <label htmlFor="pickupTime">Pickup Time:</label>
+                <label htmlFor="pickupTime">Hora de Recogida:</label>
                 <input 
                   type="time" 
                   id="pickupTime" 
@@ -59,7 +59,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
             {/* Return Column */}
             <div className="return-column">
               <div className="form-group">
-                <label htmlFor="returnOffice">Return Office:</label>
+                <label htmlFor="returnOffice">Oficina de Devolución:</label>
                 <select 
                   id="returnOffice" 
                   name="returnOffice" 
@@ -67,7 +67,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
                   onChange={handleChange}
                   className={errors.returnOffice ? 'error' : ''}
                 >
-                  <option value="">Select return office</option>
+                  <option value="">Seleccione oficina de devolución</option>
                   {mockOffices.map(office => (
                     <option key={office.id} value={office.id}>{office.name}</option>
                   ))}
@@ -76,7 +76,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
               </div>
   
               <div className="form-group">
-                <label htmlFor="returnDate">Return Date:</label>
+                <label htmlFor="returnDate">Fecha de Devolución:</label>
                 <input 
                   type="date" 
                   id="returnDate" 
@@ -89,7 +89,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
               </div>
   
               <div className="form-group">
-                <label htmlFor="returnTime">Return Time:</label>
+                <label htmlFor="returnTime">Hora de Devolución:</label>
                 <input 
                   type="time" 
                   id="returnTime" 
@@ -105,7 +105,7 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
   
           <div className="submit-container">
             <button type="submit" className="submit-button">
-              Search Available Cars
+              Buscar Coches Disponibles
             </button>
           </div>
         </form>

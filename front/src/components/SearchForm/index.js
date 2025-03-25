@@ -33,16 +33,26 @@ function SearchForm({ onSearch }) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
+    // Mensajes de error en español
+    const errorMessages = {
+      pickupOffice: "La oficina de recogida es obligatoria",
+      returnOffice: "La oficina de devolución es obligatoria",
+      pickupDate: "La fecha de recogida es obligatoria",
+      pickupTime: "La hora de recogida es obligatoria",
+      returnDate: "La fecha de devolución es obligatoria",
+      returnTime: "La hora de devolución es obligatoria"
+    };
+    
     Object.keys(formData).forEach(key => {
       if (!formData[key]) {
-        newErrors[key] = `${key} is required`;
+        newErrors[key] = errorMessages[key];
       }
     });
 
     if (formData.pickupDate) {
       const pickupDate = new Date(formData.pickupDate);
       if (pickupDate < today) {
-        newErrors.pickupDate = "Pickup date must be in the future";
+        newErrors.pickupDate = "La fecha de recogida debe ser en el futuro";
       }
     }
 
@@ -50,7 +60,7 @@ function SearchForm({ onSearch }) {
       const pickupDate = new Date(formData.pickupDate);
       const returnDate = new Date(formData.returnDate);
       if (returnDate < pickupDate) {
-        newErrors.returnDate = "Return date must be after pickup date";
+        newErrors.returnDate = "La fecha de devolución debe ser posterior a la de recogida";
       }
     }
 
