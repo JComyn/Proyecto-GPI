@@ -5,7 +5,7 @@ import "./style.css";
 function TarjetaCocheUI({ coche, onSelectCar }) {
   const handleSelectCar = () => {
     // Mostramos una alerta
-    alert("Car selected. Redirecting to the payment form...");
+    alert("Coche seleccionado, redirigiendo a la página de pago...");
     // Llamamos a la función proporcionada por el componente padre
     onSelectCar();
   };

@@ -37,6 +37,34 @@ const formatCardNumber = (value) => {
   return formattedNumber;
 };
 
+// Nueva función para validar que la fecha de expiración es posterior a la actual
+const validateExpiryDate = (expiryDate) => {
+  // Verificar formato MM/YY
+  if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+    return false;
+  }
+  
+  const [month, year] = expiryDate.split('/');
+  
+  // Crear fecha con el último día del mes de expiración
+  // Añadimos 2000 al año para obtener el año completo (20xx)
+  const expiry = new Date(2000 + parseInt(year), parseInt(month), 0);
+  
+  // Fecha actual
+  const today = new Date();
+  
+  // Comparar solo el mes y el año
+  if (
+    expiry.getFullYear() < today.getFullYear() || 
+    (expiry.getFullYear() === today.getFullYear() && 
+     expiry.getMonth() < today.getMonth())
+  ) {
+    return false;
+  }
+  
+  return true;
+};
+
 function FormularioPago({ onBack }) {
   const [cardData, setCardData] = useState({
     cardNumber: "",
@@ -98,6 +126,8 @@ function FormularioPago({ onBack }) {
       newErrors.expiryDate = "La fecha de expiración es obligatoria";
     } else if (!/^\d{2}\/\d{2}$/.test(cardData.expiryDate)) {
       newErrors.expiryDate = "Formato inválido. Use MM/YY";
+    } else if (!validateExpiryDate(cardData.expiryDate)) {
+      newErrors.expiryDate = "La tarjeta ha caducado o la fecha no es válida";
     }
     
     if (!cardData.cvv.trim()) {
