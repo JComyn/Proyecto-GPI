@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mockOffices } from './mockData';
+import mockSearchForm from './mockSearchForm';
 import './styles.css';
 
 
 function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
+
+  
     return (
       <div className="search-form-container">
         <h2 className="search-form-title">Encuentra tu Coche Perfecto</h2>

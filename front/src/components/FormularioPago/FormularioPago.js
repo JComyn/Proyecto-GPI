@@ -65,12 +65,12 @@ const validateExpiryDate = (expiryDate) => {
   return true;
 };
 
-function FormularioPago({ onBack }) {
+function FormularioPago({ onConfirmPayment }) {
   const [cardData, setCardData] = useState({
-    cardNumber: "",
-    cardholderName: "",
-    expiryDate: "",
-    cvv: "",
+    cardNumber: "4111 1111 1111 1111",
+    cardholderName: "Juan Pérez",
+    expiryDate: "12/25",
+    cvv: "123",
   });
   
   const [errors, setErrors] = useState({});
@@ -146,12 +146,11 @@ function FormularioPago({ onBack }) {
     if (validateForm()) {
       // Process payment here in a real application
       console.log("Procesando pago:", cardData);
+      onConfirmPayment(); // Llamar a la función para mostrar la confirmación de reserva
       
       // Mostrar mensaje de confirmación
       alert("¡Pago procesado correctamente! Reserva confirmada. ¡Gracias por su compra!");
       
-      // Reiniciar la aplicación
-      window.location.reload();
     }
   };
 
@@ -262,6 +261,10 @@ FormularioPago.propTypes = {
 // Valores por defecto para las props
 FormularioPago.defaultProps = {
   onBack: () => {}, // Función vacía como valor por defecto
+};
+
+FormularioPago.propTypes = {
+  onConfirmPayment: PropTypes.func.isRequired,
 };
 
 export default FormularioPago;
