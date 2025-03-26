@@ -2,9 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./style.css";
 
-function TarjetaCocheUI({ coche }) {
+function TarjetaCocheUI({ coche, onSelectCar }) {
   const handleSelectCar = () => {
-    alert("Car selected. Redirecting to the payment form...");
+    // Mostramos una alerta
+    alert("Coche seleccionado, redirigiendo a la página de pago...");
+    // Llamamos a la función proporcionada por el componente padre
+    onSelectCar();
   };
 
   return (
@@ -56,6 +59,7 @@ TarjetaCocheUI.propTypes = {
     }).isRequired,
     extras: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
+  onSelectCar: PropTypes.func.isRequired,
 };
 
 export default TarjetaCocheUI;
