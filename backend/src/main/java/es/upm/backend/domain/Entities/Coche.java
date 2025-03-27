@@ -2,6 +2,8 @@ package es.upm.backend.domain.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,10 +29,18 @@ public class Coche {
     @Column(name = "techoSolar", nullable = false)
     private boolean techoSolar;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "disponibilidad", nullable = false)
     private Disponibilidad disponibilidad;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "transmision", nullable = false)
     private Transmision transmision;
-    /* Candidatos a ser posible value object */
+
+    @Column(name = "modelo", nullable = false)
     private String modelo;
+    @Column(name = "gama", nullable = false)
     private String gama;
+    @Column(name = "marca", nullable = false)
     private String Marca;
 }
