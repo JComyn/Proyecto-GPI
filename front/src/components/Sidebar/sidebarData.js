@@ -10,12 +10,12 @@ export const sidebarData = [
         link: "/"
     },
     {
-        title: "Profile",
+        title: "Iniciar Sesión",
         icon: <AccountCircleIcon />,
         link: "/login"
     },
     {
-        title: "About us",
+        title: "¿Quiénes somos?",
         icon: <HelpIcon />,
         link: "/about"
     },

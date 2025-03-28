@@ -1,0 +1,86 @@
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Título principal */
+.confirmation-title {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+.login-form .form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.login-form label {
+  display: block;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.login-button {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 50px; /* Bordes redondeados */
+    padding: 10px 30px; /* Ajustar el tamaño del botón */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+}
+
+.login-button:hover {
+    background: linear-gradient(to right, #2980b9, #2573a7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+}
+
+.register-buttons {
+  margin-top: 80px;
+}
+
+.register-button {
+    background: linear-gradient(to right, #46c510, #055104);
+    color: white;
+    border: none;
+    border-radius: 50px; /* Bordes redondeados */
+    padding: 10px 30px; /* Ajustar el tamaño del botón */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.register-button:hover {
+    background: linear-gradient(to right, #065f0c, #073a25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+}
