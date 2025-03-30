@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "reservas-extras")
+@Table(name = "reservas")
 @Entity
 public class Reserva {
     @Id
