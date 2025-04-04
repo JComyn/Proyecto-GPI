@@ -2,7 +2,7 @@ import React from 'react'
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HelpIcon from '@mui/icons-material/Help';
-
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 export const sidebarData = [
     {
         title: "Inicio",
@@ -22,7 +22,7 @@ export const sidebarData = [
     {
 
         title: "Reservar",
-        icon: <HelpIcon />,
+        icon: <DirectionsCarIcon />,
         link: "/reservar"
     }
 ];

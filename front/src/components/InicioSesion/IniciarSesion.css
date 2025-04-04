@@ -1,6 +1,16 @@
+
+
+.claseparacentrar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #ffffff; /* Cambia el color de fondo si es necesario */
+  margin: 0;
+}
+
 .login-container {
   max-width: 400px;
-  margin: 50px auto;
   padding: 20px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
