@@ -5,6 +5,7 @@ import Login from './paginas/login';
 import About from './paginas/aboutus';
 import Reservar from './paginas/reservarCoche';
 import Sidebar from 'components/Sidebar';
+import Flota from './paginas/flota';
 
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/reservar" element={<Reservar />} />
+                    <Route path="/flota" element={<Flota />} />
                 </Routes>
             </BrowserRouter>
             </div>
