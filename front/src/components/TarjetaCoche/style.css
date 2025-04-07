@@ -1,43 +1,54 @@
 .car-card-container {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro con transparencia */
+  background-image: url(../LandingPage/imagen.png); /* Cambia la ruta a tu imagen */
+  background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
+  background-position: center; /* Centra la imagen */
+  border: 1px solid #ffffff; /* Borde blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidad */
   padding: 20px;
-  margin: 20px auto;
-  max-width: 400px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animación al pasar el ratón */
+  color: white; 
+}
+
+.car-card-container:hover {
+  transform: translateY(-5px); /* Efecto de elevación */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
 }
 
 .car-card-title {
-  font-size: 1.5rem;
-  color: #000000;
-  margin-bottom: 15px;
-  text-align: center;
+  font-size: 2rem; /* Tamaño de fuente grande */
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Fuente de la landing */
+  color: white; /* Texto blanco */
+  margin-bottom: 10px;
+  text-align: center; /* Centrar el título */
 }
 
 .car-card-details {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
 .car-card-section {
-  background-color: #fff;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  padding: 10px;
+  flex: 1;
 }
 
 .car-card-section h3 {
-  font-size: 1.2rem;
-  color: #555;
+  font-size: 1.5rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Fuente de la landing */
+  color: white; /* Texto blanco */
   margin-bottom: 10px;
+  border-bottom: 2px solid #ffffff; /* Línea decorativa blanca */
+  padding-bottom: 5px;
 }
 
 .car-card-section p {
+  font-size: 1rem;
+  color: #f0f0f0; /* Texto gris claro */
   margin: 5px 0;
-  font-size: 0.9rem;
-  color: #666;
 }
 
 .car-card-section ul {
@@ -46,32 +57,28 @@
 }
 
 .car-card-section ul li {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 1rem;
+  color: #f0f0f0;
 }
 
-/* Centrar el botón */
 .car-card-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 15px;
 }
-  
-  /* Estilo del botón */
+
 .select-car-button {
-    background: linear-gradient(to right, #3498db, #2980b9);
-    color: white;
-    border: none;
-    border-radius: 50px; /* Bordes redondeados */
-    padding: 10px 30px; /* Ajustar el tamaño del botón */
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+  background-color: #000000; /* Fondo negro */
+  color: white; /* Texto blanco */
+  border: 2px solid white; /* Borde blanco */
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Fuente de la landing */
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
-  
-  /* Efecto hover */
+
 .select-car-button:hover {
-    background: linear-gradient(to right, #2980b9, #2573a7);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+  background-color: white; /* Fondo blanco al pasar el ratón */
+  color: black; /* Texto negro */
 }

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./style.css";
 
-function TarjetaCocheUI({ coche, onSelectCar }) {
+function TarjetaCocheUI({ coche, onSelectCar, mostrarBoton = true }) {
   const handleSelectCar = () => {
     // Mostramos una alerta
     alert("Coche seleccionado, redirigiendo a la página de pago...");
@@ -36,9 +36,11 @@ function TarjetaCocheUI({ coche, onSelectCar }) {
         </div>
       </div>
       <div className="car-card-actions">
-        <button className="select-car-button" onClick={handleSelectCar}>
-          SELECT CAR
-        </button>
+        {mostrarBoton && (
+          <button className="select-car-button" onClick={handleSelectCar}>
+            RESERVAR
+          </button>
+        )}
       </div>
     </div>
   );
@@ -60,6 +62,7 @@ TarjetaCocheUI.propTypes = {
     extras: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   onSelectCar: PropTypes.func.isRequired,
+  mostrarBoton: PropTypes.bool,
 };
 
 export default TarjetaCocheUI;
