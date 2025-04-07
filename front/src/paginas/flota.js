@@ -1,13 +1,14 @@
 
-import AboutUs from "components/About"
 
 
-export default function About() {
+
+
+export default function Flota() {
     return (
         <>
             
                 
-                <AboutUs/>
+                
                 
                 
                 

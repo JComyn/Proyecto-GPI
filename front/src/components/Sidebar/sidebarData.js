@@ -2,6 +2,9 @@ import React from 'react'
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HelpIcon from '@mui/icons-material/Help';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import GarageIcon from '@mui/icons-material/Garage'; // Importa el icono de Garage
+
 
 export const sidebarData = [
     {
@@ -22,7 +25,13 @@ export const sidebarData = [
     {
 
         title: "Reservar",
-        icon: <HelpIcon />,
+        icon: <DirectionsCarIcon />,
         link: "/reservar"
+    },
+    {
+
+        title: "Visualizar flota",
+        icon: <GarageIcon />,
+        link: "/flota"
     }
 ];

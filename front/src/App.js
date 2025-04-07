@@ -5,7 +5,8 @@ import Login from './paginas/login';
 import About from './paginas/aboutus';
 import Reservar from './paginas/reservarCoche';
 import Sidebar from 'components/Sidebar';
-import IniciarSesion from 'components/InicioSesion/IniciarSesion';
+import Flota from './paginas/flota';
+
 import './App.css';
 
 function App() {
@@ -16,9 +17,10 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route index element={<LandingP />} />
-                    <Route path="/login" element={<IniciarSesion />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/reservar" element={<Reservar />} />
+                    <Route path="/flota" element={<Flota />} />
                 </Routes>
             </BrowserRouter>
             </div>

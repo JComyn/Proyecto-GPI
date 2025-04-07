@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url(./be7a9b1ae7a1b38a60821ba2fffd31e3.jpg);
+  background-image: url(./imagen.png); /* Cambia la ruta a la imagen de fondo */
   background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
   top: 0px;
   left: 0px;
@@ -12,7 +12,7 @@
 }
 
 .landing-header {
-  font-size: 2.5rem;
+  font-size: 8rem;
   color: white;
   margin-bottom: 1rem;
   display: flex; /* Flexbox para centrar */
@@ -31,4 +31,19 @@
   font-size: 1.5rem;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.titulo{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+
+
+
+}
+
+.subtitulo{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 3rem;
+  color: white;
+  margin-top: 0.5rem;
 }

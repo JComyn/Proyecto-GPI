@@ -29,6 +29,7 @@ function IniciarSesion() {
   };
 
   return (
+    <div className = "claseparacentrar">
     <div className="login-container">
       <h2 className="confirmation-title">Iniciar Sesión</h2>
       <form onSubmit={handleSubmit} className="login-form">
@@ -71,6 +72,7 @@ function IniciarSesion() {
           Registro como Negocio
         </button>
       </div>
+    </div>
     </div>
   );
 }

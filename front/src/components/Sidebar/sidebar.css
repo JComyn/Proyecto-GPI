@@ -1,7 +1,7 @@
 .sideBar {
     width: 250px;
     height: 100%;
-    background-color: #fffeb6;
+    background-color: #000000;
     position: fixed;
     top: 0;
     left: 0;
@@ -10,7 +10,7 @@
 }
 
 .titulo {
-    color: #000;
+    color: #ffffff;
     font-size: 1.5em;
     font-weight: bold;
     padding: 10px;
@@ -41,11 +41,13 @@
     flex: 30%; /* Asegura que el icono ocupe el 30% del ancho */
     display: grid;
     place-items: center; /* Centra el contenido del icono */
+    color: #ffffff;
 
 }
 
 .texto {
-    flex: 70%; /* Asegura que el texto ocupe el 70% del ancho */    
+    flex: 70%; /* Asegura que el texto ocupe el 70% del ancho */
+    color: #ffffff;    
 }
 
 

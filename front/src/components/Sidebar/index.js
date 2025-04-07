@@ -7,7 +7,7 @@ function Sidebar() {
     return (
         <div className="sideBar">
 
-            <h1 className="titulo">CAR RENT</h1>
+            <h1 className="titulo">AUTO VELOZ</h1>
             <ul className="listaSidebar">
             {sidebarData.map((val, key) => {
                 return (
