@@ -6,6 +6,7 @@ import About from './paginas/aboutus';
 import Reservar from './paginas/reservarCoche';
 import Sidebar from 'components/Sidebar';
 import Flota from './paginas/flota';
+import RegistroNegocioPage from './paginas/registroNegocio';
 import RegistroParticularPage from './paginas/registroParticular';
 
 import './App.css';
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/reservar" element={<Reservar />} />
                     <Route path="/flota" element={<Flota />} />
+                    <Route path="/registro-negocio" element={<RegistroNegocioPage />} />
                     <Route path="/registro-particular" element={<RegistroParticularPage />} />
                 </Routes>
             </BrowserRouter>
