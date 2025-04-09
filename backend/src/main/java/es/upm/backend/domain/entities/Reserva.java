@@ -1,6 +1,6 @@
-package es.upm.backend.domain.Entities;
+package es.upm.backend.domain.entities;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ import lombok.Setter;
 public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @OneToOne
     @JoinColumn(name = "cliente_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reserva_cliente"))
     private Cliente cliente;
@@ -33,15 +33,23 @@ public class Reserva {
     @JoinColumn(name = "coche_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reserva_coche"))
     private Coche coche;
     @OneToOne
-    @JoinColumn(name = "oficina_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reserva_oficina"))
-    private Oficina oficina;
+    @JoinColumn(name = "oficina_recogida_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reserva_oficina"))
+    private Oficina oficinaRecogida;
     @OneToOne
-    @JoinColumn(name = "oficina_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reserva_oficina"))
-    private Oficina oficinaDeevolucion;
+    @JoinColumn(name = "oficina_devolucion_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reserva_oficina"))
+    private Oficina oficinaDevolucion;
     @Column(name = "fechaHoraRecogida", nullable = false)
-    private Date fechaHoraRecogida;
+    private LocalDateTime fechaHoraRecogida;
     @Column(name = "fechaHoraDevolucion", nullable = false)
-    private Date fechaHoraDevolucion;
+    private LocalDateTime fechaHoraDevolucion;
     @Column(name = "estado", nullable = false)
     private Estado estado;
+
+
+    public void inicializarEntidades(Cliente cliente, Coche coche, Oficina oficinaRecogida, Oficina oficinaDevolucion){
+        this.cliente = cliente;
+        this.coche = coche;
+        this.oficinaRecogida = oficinaRecogida;
+        this.oficinaDevolucion = oficinaDevolucion;
+    }
 }
