@@ -28,19 +28,59 @@ public class ReservaController {
         this.reservaService = reservaService;
     }
 
+
+    @Operation(
+            summary = "Recupera todas las reservas",
+            description = "Recupera todas las reservas de la base de datos ¿Deberia solo las proximas o actuales?"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Reservas recuperadas correctamente"
+            ),
+            @ApiResponse(responseCode = "204", description = "No hay reservas disponibles"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @GetMapping()
     public ResponseEntity<ListaReservas> findAll(){
+        // Capturar excepcion de ReservasEmptyException -> Codigo 204
         return ResponseEntity.ok(new ListaReservas(reservaService.findAll()));
     }
 
+    @Operation(
+            summary = "Elimina una reserva existente",
+            description = "Elimina una reserva existente de la base de datos utilizando su ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Reserva eliminada correctamente"
+            ),
+            @ApiResponse(responseCode = "400", description = "La reserva no existe"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @DeleteMapping("/{idReserva}")
     public ResponseEntity<Void> deleteById(@PathVariable Long idReserva){
+        // Capturar excepcion de ReservaNotFoundException -> codigo 400
         reservaService.delete(idReserva);
         return ResponseEntity.ok().build();
     }
 
+    @Operation(
+            summary = "Crea una nueva reserva",
+            description = "Crea una nueva reserva a partide los datos proporcionados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Reserva creada correctamente"
+            ),
+            @ApiResponse(responseCode = "400", description = "Cuerpo de la solicitud inválido"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @PostMapping()
     public ResponseEntity<Reserva> create(CreateReservaDto newReserva){
+        // Capturar excepcion de ReservaInvalidaException -> codigo 400
         return ResponseEntity.ok(reservaService.create(
                 ReservaMapper.createDto2Entity(newReserva),
                 newReserva.idCoche(),
@@ -63,6 +103,7 @@ public class ReservaController {
     })
     @PostMapping("/validar")
     public ResponseEntity<Void> validarReserva(@RequestBody ValidarReservaDto validarReservaDto){
+        // Capturar excepcion de ReservaInvalidaException -> codigo 400
         boolean reservaValida = reservaService.reservaValida(
                 validarReservaDto.idCoche(),
                 validarReservaDto.idOficinaRecogida(),
@@ -74,8 +115,22 @@ public class ReservaController {
     }
 
 
+    @Operation(
+            summary = "Realiza una reserva de manera efectiva",
+            description = "Realiza una reserva de manera efectiva en la base de datos utilizando los datos proporcionados."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Reserva realizada correctamente"
+            ),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @PostMapping("/realizar")
     public ResponseEntity<Reserva> realizarReserva(@RequestBody RealizarReservaDto realizarReservaDto){
+        // Capturar excepcion de ReservaInvalidaException -> codigo 400
+
         Reserva reservaRealizada = reservaService.realizarReserva(
                 realizarReservaDto.idCoche(),
                 realizarReservaDto.idCliente(),
