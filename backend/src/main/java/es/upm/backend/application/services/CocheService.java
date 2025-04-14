@@ -1,5 +1,6 @@
 package es.upm.backend.application.services;
 
+import es.upm.backend.application.exception.CochesEmptyException;
 import es.upm.backend.application.exception.OficinaNotFoundException;
 import es.upm.backend.domain.entities.Coche;
 import es.upm.backend.domain.repository.CocheRepository;
@@ -16,8 +17,11 @@ public class CocheService {
         this.cocheRepository = cocheRepository;
     }
 
-    public List<Coche> findAll(){
+    public List<Coche> findAll() {
         List<Coche> coches = cocheRepository.findAll();
+        if (coches.isEmpty()) {
+            throw new CochesEmptyException();
+        }
         return coches;
     }
 

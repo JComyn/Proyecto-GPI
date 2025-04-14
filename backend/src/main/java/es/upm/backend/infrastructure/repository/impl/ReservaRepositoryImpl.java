@@ -1,5 +1,6 @@
 package es.upm.backend.infrastructure.repository.impl;
 
+import es.upm.backend.application.exception.ReservaNotFoundException;
 import es.upm.backend.domain.entities.*;
 import es.upm.backend.domain.repository.ReservaRepository;
 import es.upm.backend.infrastructure.repository.jpa.ClienteJpaRepository;
@@ -21,7 +22,8 @@ public class ReservaRepositoryImpl implements ReservaRepository {
     private final CocheJpaRepository cocheJpaRepository;
     private final OficinaJpaRepository oficinaJpaRepository;
 
-    public ReservaRepositoryImpl(ReservaJpaRepository reservaJpaRepository, ClienteJpaRepository clienteJpaRepository, CocheJpaRepository cocheJpaRepository, OficinaJpaRepository oficinaJpaRepository){
+    public ReservaRepositoryImpl(ReservaJpaRepository reservaJpaRepository, ClienteJpaRepository clienteJpaRepository,
+            CocheJpaRepository cocheJpaRepository, OficinaJpaRepository oficinaJpaRepository) {
         this.reservaJpaRepository = reservaJpaRepository;
         this.clienteJpaRepository = clienteJpaRepository;
         this.cocheJpaRepository = cocheJpaRepository;
@@ -34,18 +36,26 @@ public class ReservaRepositoryImpl implements ReservaRepository {
     }
 
     @Override
-    public Reserva create(Reserva reserva, Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion) {
-        Cliente cliente = clienteJpaRepository.findById(idCliente).get();
-        Coche coche = cocheJpaRepository.findById(idCoche).get();
-        Oficina oficinaRecogida = oficinaJpaRepository.findById(idOficinaRecogida).get();
-        Oficina oficinaDevolucion = oficinaJpaRepository.findById(idOficinaDevolucion).get();
-        reserva.inicializarEntidades(cliente, coche, oficinaRecogida, oficinaDevolucion);
-        return reservaJpaRepository.save(reserva);
-    }
+public Reserva create(Reserva reserva, Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion) {  //Sustituyo el findById(idCliente).get() por el orElseThrow para evitar el NullPointerException
+    Cliente cliente = clienteJpaRepository.findById(idCliente)
+            .orElseThrow(() -> new ReservaNotFoundException("Cliente con id " + idCliente + " no encontrado."));
+    Coche coche = cocheJpaRepository.findById(idCoche)
+            .orElseThrow(() -> new ReservaNotFoundException("Coche con id " + idCoche + " no encontrado."));
+    Oficina oficinaRecogida = oficinaJpaRepository.findById(idOficinaRecogida)
+            .orElseThrow(() -> new ReservaNotFoundException("Oficina de recogida con id " + idOficinaRecogida + " no encontrada."));
+    Oficina oficinaDevolucion = oficinaJpaRepository.findById(idOficinaDevolucion)
+            .orElseThrow(() -> new ReservaNotFoundException("Oficina de devolución con id " + idOficinaDevolucion + " no encontrada."));
+
+    reserva.inicializarEntidades(cliente, coche, oficinaRecogida, oficinaDevolucion);
+    return reservaJpaRepository.save(reserva);
+}
 
     @Override
     public void delete(Long idReserva) {
         Optional<Reserva> reserva = reservaJpaRepository.findById(idReserva);
+        if (reserva.isEmpty()) {
+            throw new ReservaNotFoundException("Reserva con id " + idReserva + " no encontrada.");
+        }
         reservaJpaRepository.delete(reserva.get());
     }
 
@@ -61,17 +71,26 @@ public class ReservaRepositoryImpl implements ReservaRepository {
     }
 
     @Override
-    public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion, LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion) {
-        Reserva reserva = new Reserva(
-                null,
-                clienteJpaRepository.findById(idCliente).get(),
-                cocheJpaRepository.findById(idCoche).get(),
-                oficinaJpaRepository.findById(idOficinaRecogida).get(),
-                oficinaJpaRepository.findById(idOficinaDevolucion).get(),
-                fechaHoraRecogida,
-                fechaHoraDevolucion,
-                Estado.APROBADO
-        );
-        return reservaJpaRepository.save(reserva);
-    }
+public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion,
+        LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion) {
+    Cliente cliente = clienteJpaRepository.findById(idCliente)
+            .orElseThrow(() -> new ReservaNotFoundException("Cliente con id " + idCliente + " no encontrado."));
+    Coche coche = cocheJpaRepository.findById(idCoche)
+            .orElseThrow(() -> new ReservaNotFoundException("Coche con id " + idCoche + " no encontrado."));
+    Oficina oficinaRecogida = oficinaJpaRepository.findById(idOficinaRecogida)
+            .orElseThrow(() -> new ReservaNotFoundException("Oficina de recogida con id " + idOficinaRecogida + " no encontrada."));
+    Oficina oficinaDevolucion = oficinaJpaRepository.findById(idOficinaDevolucion)
+            .orElseThrow(() -> new ReservaNotFoundException("Oficina de devolución con id " + idOficinaDevolucion + " no encontrada."));
+
+    Reserva reserva = new Reserva(
+            null,
+            cliente,
+            coche,
+            oficinaRecogida,
+            oficinaDevolucion,
+            fechaHoraRecogida,
+            fechaHoraDevolucion,
+            Estado.APROBADO);
+    return reservaJpaRepository.save(reserva);
+}
 }
