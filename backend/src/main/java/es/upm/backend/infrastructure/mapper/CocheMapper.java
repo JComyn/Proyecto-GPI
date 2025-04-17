@@ -11,9 +11,11 @@ public class CocheMapper {
                 newCoche.modelo(),
                 newCoche.marca(),
                 newCoche.transmision(),
-                newCoche.color(),
+                newCoche.categoria(),
                 newCoche.puertas(),
                 newCoche.techoSolar(),
+                newCoche.extras(),
+                newCoche.tarifa(),
                 null
         );
     }

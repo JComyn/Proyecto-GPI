@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "coches")
 @AllArgsConstructor
@@ -26,12 +28,17 @@ public class Coche {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "transmision", nullable = false)
     private Transmision transmision;
-    @Column(name = "color", nullable = false)
-    private String color;
+    @Column(name = "categoria", nullable = false)
+    private String categoria;
     @Column(name = "puertas")
     private short puertas;
     @Column(name = "techoSolar", nullable = false)
     private boolean techoSolar;
+    @ElementCollection
+    private List<String> extras;
+
+    @Embedded
+    private Tarifa tarifa;
 
     @ManyToOne
     @JoinColumn(name = "oficina_id")
