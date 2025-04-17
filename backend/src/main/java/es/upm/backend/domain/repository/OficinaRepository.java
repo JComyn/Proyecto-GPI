@@ -8,4 +8,6 @@ public interface OficinaRepository {
     List<Oficina> findAll();
     Oficina create(Oficina oficina);
     void delete(Long idOficina);
+    boolean existsByDireccion(String direccion);
+    Oficina save(Oficina newOficina);
 }

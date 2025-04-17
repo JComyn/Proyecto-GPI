@@ -5,4 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OficinaJpaRepository extends JpaRepository<Oficina, Long> {
 
+    boolean existsByDireccion(String direccion);
+
+
 }

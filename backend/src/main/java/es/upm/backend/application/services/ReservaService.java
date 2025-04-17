@@ -1,5 +1,8 @@
 package es.upm.backend.application.services;
 
+import es.upm.backend.application.exception.ReservaInvalidaException;
+import es.upm.backend.application.exception.ReservasEmptyException;
+import es.upm.backend.application.exception.VehiculoNoDisponibleException;
 import es.upm.backend.domain.entities.Reserva;
 import es.upm.backend.domain.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
@@ -12,35 +15,65 @@ public class ReservaService {
 
     private final ReservaRepository reservaRepository;
 
-    public ReservaService(ReservaRepository reservaRepository){
+    public ReservaService(ReservaRepository reservaRepository) {
         this.reservaRepository = reservaRepository;
     }
 
-    public List<Reserva> findAll(){
-        return reservaRepository.findAll();
+    public List<Reserva> findAll() {
+        List<Reserva> reservas = reservaRepository.findAll();
+        if (reservas.isEmpty()) {
+            throw new ReservasEmptyException("No hay reservas disponibles.");
+        }
+        return reservas;
     }
 
-    public Reserva create(Reserva newReserva, Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion){
+    public Reserva create(Reserva newReserva, Long idCoche, Long idCliente, Long idOficinaRecogida,
+            Long idOficinaDevolucion) {
         return reservaRepository.create(newReserva, idCoche, idCliente, idOficinaRecogida, idOficinaDevolucion);
     }
 
-    public void delete(Long idReserva){
+    public void delete(Long idReserva) {
         reservaRepository.delete(idReserva);
     }
 
-    public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion, LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion){
-        //TODO: similar a reservaValida
-        return reservaRepository.realizarReserva(idCoche, idCliente, idOficinaRecogida, idOficinaDevolucion, fechaHoraRecogida, fechaHoraDevolucion);
+    public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion,
+            LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion) {
+        // Validar la disponibilidad del vehículo
+        if (reservaRepository.existeReservaSolapada(idCoche, fechaHoraRecogida, fechaHoraDevolucion)) {
+            throw new VehiculoNoDisponibleException();
+        }
+
+        // Validar la reserva
+        if (!reservaValida(idCoche, idOficinaRecogida, fechaHoraRecogida, fechaHoraDevolucion)) {
+            throw new ReservaInvalidaException("La reserva no es válida.");
+        }
+
+        // Crear la reserva si es válida
+        return reservaRepository.realizarReserva(idCoche, idCliente, idOficinaRecogida, idOficinaDevolucion,
+                fechaHoraRecogida, fechaHoraDevolucion);
     }
 
-    public boolean reservaValida(Long idCoche, Long idOficina, LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion){
-        //TODO: validacion de la existencia de las entidades mencionadas, validez de las fechas y manejo de excepciones
-        if(reservaRepository.existeReservaSolapada(idCoche, fechaRecogida, fechaDevolucion)){
-            return false;
+    public boolean reservaValida(Long idCoche, Long idOficina, LocalDateTime fechaRecogida,
+            LocalDateTime fechaDevolucion) {
+        // Validar que las fechas sean válidas
+        if (fechaRecogida.isAfter(fechaDevolucion)) {
+            throw new ReservaInvalidaException("La fecha de recogida no puede ser posterior a la fecha de devolución.");
         }
-        if(reservaRepository.cocheEstaraEnOficina(idCoche, idOficina, fechaRecogida)){
-            return false;
+        if (fechaRecogida.isBefore(fechaRecogida)) {
+            throw new ReservaInvalidaException("La fecha de recogida no puede estar en el pasado.");
         }
+
+        // Validar que no exista una reserva solapada para el coche
+        if (reservaRepository.existeReservaSolapada(idCoche, fechaRecogida, fechaDevolucion)) {
+            throw new ReservaInvalidaException("El coche ya tiene una reserva en el rango de fechas especificado.");
+        }
+
+        // Validar que el coche estará disponible en la oficina indicada
+        if (!reservaRepository.cocheEstaraEnOficina(idCoche, idOficina, fechaRecogida)) {
+            throw new ReservaInvalidaException(
+                    "El coche no estará disponible en la oficina indicada en la fecha de recogida.");
+        }
+
         return true;
     }
 }
