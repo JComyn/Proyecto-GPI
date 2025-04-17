@@ -11,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,10 +25,18 @@ public class Cliente {
     private Long id;
     @Column(name = "nombre", nullable = false)
     private String nombre;
-    @Column(name = "apellido", nullable = false)
-    private String apellido;
+    @Column(name = "apellidos")
+    private String apellidos;
     @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "telefono", nullable = false)
-    private String telefono;
+    @Column(name = "password", nullable = false)
+    private String password;
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "nif")
+    private String nif;
+    @Column(name = "nacimiento")
+    private LocalDate nacimiento;
+    @Column(name = "esNegocio", nullable = false)
+    private boolean esNegocio;
 }

@@ -2,11 +2,13 @@ package es.upm.backend.application.services;
 
 import es.upm.backend.application.exception.ClienteAlreadyExistsException;
 import es.upm.backend.application.exception.ClientesEmptyException;
+import es.upm.backend.application.exception.InvalidCredentialsException;
 import es.upm.backend.domain.entities.Cliente;
 import es.upm.backend.domain.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -33,5 +35,12 @@ public class ClienteService {
             throw new ClienteAlreadyExistsException(newCliente.getEmail());
         }
         return clienteRepository.save(newCliente);
+    }
+
+    public Cliente validateCredentials(String email, String password){
+        Cliente cliente = clienteRepository.findByEmail(email);
+        if(cliente == null) throw new InvalidCredentialsException("Email no registrado.");
+        if (cliente.getPassword().equals(password)) return cliente;
+        else throw new InvalidCredentialsException("Email o contraseña incorrectos");
     }
 }

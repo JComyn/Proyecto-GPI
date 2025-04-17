@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import "./styles.css";
+import { useAuth } from "hooks/useAuth";
 
 function RegistroParticular() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function RegistroParticular() {
     domicilio: ""
   });
 
+  const {handleRegistroParticular, errorAuth} = useAuth();
   const [errors, setErrors] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -126,6 +128,8 @@ function RegistroParticular() {
     if (validateForm()) {
       // Aquí se implementará la lógica para enviar los datos al backend
       console.log("Datos de registro:", formData);
+      handleRegistroParticular(formData.nombre, formData.apellidos, formData.domicilio, formData.fechaNacimiento, formData.email, formData.password);
+      if(errorAuth) return (<h1>ERROR: {errorAuth}</h1>)
       
       // Mostrar mensaje de éxito
       alert("Registro completado con éxito. Ahora puedes iniciar sesión.");

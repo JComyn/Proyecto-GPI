@@ -1,7 +1,9 @@
 package es.upm.backend.infrastructure.controllers;
 
-import es.upm.backend.application.dto.CreateClienteDto;
+import es.upm.backend.application.dto.CreateClienteNegocioDto;
+import es.upm.backend.application.dto.CreateClienteParticularDto;
 import es.upm.backend.application.dto.ListaClientes;
+import es.upm.backend.application.dto.LoginRequestDto;
 import es.upm.backend.application.services.ClienteService;
 import es.upm.backend.domain.entities.Cliente;
 import es.upm.backend.infrastructure.mapper.ClienteMapper;
@@ -62,21 +64,36 @@ public class ClienteController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(
-            summary = "Crear un nuevo cliente",
-            description = "Crea un nuevo cliente si el correo electrónico no está ya registrado en la base de datos"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Usuario creado correctamente"
-            ),
-            @ApiResponse(responseCode = "400", description = "El correo electrónico ya está registrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-    })
-    @PostMapping()
-    public ResponseEntity<Cliente> create(CreateClienteDto newCliente){
-        // Capturar expcepcion de ClienteAlreadyExistsException -> codigo 400
-        return ResponseEntity.ok(clienteService.create(ClienteMapper.createDto2Entity(newCliente)));
+    //@Operation(
+    //        summary = "Crear un nuevo cliente",
+    //        description = "Crea un nuevo cliente si el correo electrónico no está ya registrado en la base de datos"
+    //)
+    //@ApiResponses(value = {
+    //        @ApiResponse(
+    //                responseCode = "200",
+    //                description = "Usuario creado correctamente"
+    //        ),
+    //        @ApiResponse(responseCode = "400", description = "El correo electrónico ya está registrado"),
+    //        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    //})
+    //@PostMapping()
+    //public ResponseEntity<Cliente> create(CreateClienteParticularDto newCliente){
+    //    // Capturar expcepcion de ClienteAlreadyExistsException -> codigo 400
+    //    return ResponseEntity.ok(clienteService.create(ClienteMapper.createDto2Entity(newCliente)));
+    //}
+
+    @PostMapping("/registro/particular")
+    public ResponseEntity<Cliente> createParticular(@RequestBody CreateClienteParticularDto newCliente){
+        return ResponseEntity.ok(clienteService.create(ClienteMapper.createDto2Particular(newCliente)));
+    }
+
+    @PostMapping("/registro/negocio")
+    public ResponseEntity<Cliente> createNegocio(@RequestBody CreateClienteNegocioDto newCliente){
+        return ResponseEntity.ok(clienteService.create(ClienteMapper.createDto2Negocio(newCliente)));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Cliente> login(@RequestBody LoginRequestDto req){
+        return ResponseEntity.ok(clienteService.validateCredentials(req.email(), req.password()));
     }
 }
