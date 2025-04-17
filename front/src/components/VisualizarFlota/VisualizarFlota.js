@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import "./VisualizarFlota.css"; // Estilos para el componente
 import TarjetaCocheUI from "../TarjetaCoche/TarjetaCocheUI"; // Reutilizamos la tarjeta de coche
-import mockCars from "./mockCars"; // Datos de ejemplo para los coches
+import { useFlota } from "hooks/useFlota";
 
 function VisualizarFlota() {
   const [filtro, setFiltro] = useState("");
+  const {flota, error} = useFlota();
+
+  if(error) return (<h1>ERROR: {error}</h1>)
 
   const handleFiltroChange = (e) => {
     setFiltro(e.target.value);
   };
 
-  const cochesFiltrados = mockCars.filter((coche) =>
+  const cochesFiltrados = (flota).filter((coche) =>
     coche.marca.toLowerCase().includes(filtro.toLowerCase())
   );
 
