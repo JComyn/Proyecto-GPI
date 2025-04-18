@@ -4,7 +4,7 @@ import "./IniciarSesion.css";
 import { useAuth } from "hooks/useAuth";
 
 function IniciarSesion() {
-  const {handleLogin, errorAuth} = useAuth();
+  const {handleLogin} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,11 +27,14 @@ function IniciarSesion() {
     }
     setError("");
     console.log("Iniciando sesión con:", { email, password });
-    // Aquí se integrará con el backend en el futuro
-    await handleLogin(email, password);
-    //console.log(errorAuth);
-    if(!errorAuth) navigate("/");
-    else return(<h1>ERROR: {errorAuth}</h1>);
+    const errorAuth = await handleLogin(email, password);
+    if(!errorAuth){
+      alert("Sesión iniciada con éxito, se te redirigira a inicio.");
+      navigate("/");
+    }
+    else{
+      alert("Credenciales incorrectas");
+    } // TODO: Aqui convendria llamar a un handleError mas sofisticado
     
   };
 

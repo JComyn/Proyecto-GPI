@@ -7,7 +7,7 @@ function VisualizarFlota() {
   const [filtro, setFiltro] = useState("");
   const {flota, error} = useFlota();
 
-  if(error) return (<h1>ERROR: {error}</h1>)
+  if(error) alert("No hay coches en la BBDD");
 
   const handleFiltroChange = (e) => {
     setFiltro(e.target.value);

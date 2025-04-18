@@ -120,16 +120,18 @@ function RegistroNegocio() {
     setFormSubmitted(true);
     
     if (validateForm()) {
-      // Aquí se implementará la lógica para enviar los datos al backend
       console.log("Datos de registro de empresa:", formData);
-      handleRegistroNegocio(formData.nombreEmpresa, formData.nif, formData.email, formData.password);
-      if (errorAuth) return (<h1>ERROR: {error}</h1>)
+      const errorAuth = handleRegistroNegocio(formData.nombreEmpresa, formData.nif, formData.email, formData.password);
+      if(!errorAuth){
+        // Mostrar mensaje de éxito
+        alert("Registro de empresa completado con éxito. Ahora puedes iniciar sesión.");
+        // Redirigir al usuario a la página de inicio de sesión
+        navigate("/login");
+      } else {
+        alert("Error: formato incorrecto en la solicitud de registro.");
+        // TODO: lo mismo que en IniciarSesion.js
+      }
       
-      // Mostrar mensaje de éxito
-      alert("Registro de empresa completado con éxito. Ahora puedes iniciar sesión.");
-      
-      // Redirigir al usuario a la página de inicio de sesión
-      navigate("/login");
     }
   };
 
