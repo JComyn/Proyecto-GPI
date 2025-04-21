@@ -2,8 +2,14 @@ import React from "react";
 import "./style.css";
 import PropTypes from "prop-types";
 import { mockOffices } from "../SearchForm/mockData";
+import { useOficinas } from "hooks/useOficinas";
 
 function ConfirmacionReserva({ reservationData, onBack }) {
+
+  const {oficinas, errorOficinas} = useOficinas();
+  if(errorOficinas) alert("No hay oficinas en la BBDD");
+
+
   if (!reservationData) {
     return <p>No hay datos de reserva disponibles.</p>;
   }
@@ -23,8 +29,8 @@ function ConfirmacionReserva({ reservationData, onBack }) {
   const returnOfficeId = Number(returnOffice);
 
   // Buscar los nombres de las oficinas
-  const pickupOfficeName = mockOffices.find((office) => office.id === pickupOfficeId)?.name || "Oficina desconocida";
-  const returnOfficeName = mockOffices.find((office) => office.id === returnOfficeId)?.name || "Oficina desconocida";
+  const pickupOfficeName = oficinas.find((office) => office.id === pickupOfficeId)?.direccion || "Oficina desconocida";
+  const returnOfficeName = oficinas.find((office) => office.id === returnOfficeId)?.direccion || "Oficina desconocida";
 
   return (
     <div className="confirmation-container">

@@ -1,9 +1,6 @@
 package es.upm.backend.infrastructure.controllers;
 
-import es.upm.backend.application.dto.CreateReservaDto;
-import es.upm.backend.application.dto.ListaReservas;
-import es.upm.backend.application.dto.RealizarReservaDto;
-import es.upm.backend.application.dto.ValidarReservaDto;
+import es.upm.backend.application.dto.*;
 import es.upm.backend.application.exception.ReservaInvalidaException;
 import es.upm.backend.application.services.ReservaService;
 import es.upm.backend.domain.entities.Reserva;
@@ -140,5 +137,12 @@ public class ReservaController {
                 realizarReservaDto.fechaHoraDevolucion()
         );
         return ResponseEntity.ok(reservaRealizada);
+    }
+
+    @PostMapping("/disponibles")
+    public ResponseEntity<ListaCoches> getCochesDisponibles(@RequestBody GetCochesDisponiblesDto req){
+        return ResponseEntity.ok(new ListaCoches(
+                reservaService.getCochesDisponibles(req.idOficinaRecogida(), req.fechaRecogida(), req.fechaDevolucion())
+        ));
     }
 }

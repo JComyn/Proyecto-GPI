@@ -7,6 +7,7 @@ import FormularioPago from "../components/FormularioPago"; // Asegúrate de que 
 import mockCar from '../components/TarjetaCoche/mockCar';
 import ConfirmacionReserva from '../components/ConfReserva/ConfirmacionReserva';
 import mockSearchForm from '../components/SearchForm/mockSearchForm';
+import { useReserva } from 'hooks/useReserva';
 
 export default function Reservar() {
 
@@ -16,22 +17,34 @@ export default function Reservar() {
   const [searchData, setSearchData] = useState(null); // Datos del formulario de búsqueda
   const [selectedCar, setSelectedCar] = useState(null); // Coche seleccionado
   const [reservationData, setReservationData] = useState(null); // Datos de la reserva
+  const {coches, errorReserva, buscarCochesDisponibles} = useReserva();
+  const [formData, setFormData] = useState({
+      pickupOffice: "",
+      returnOffice: "",
+      pickupDate: "",
+      pickupTime: "",
+      returnDate: "",
+      returnTime: ""
+    });
 
-  const handleSearch = (searchData) => {
+
+  const handleSearch = async (searchData) => {
     console.log("Search form data:", searchData);
+    await buscarCochesDisponibles(formData);
+    if(errorReserva) alert("No hay coches disponibles para reservar con estos parametros");
     setShowCar(true); // Mostrar la tarjeta del coche
     setShowPayment(false); // Ocultar el formulario de pago si estaba visible
     setShowConfirmation(false); // Ocultar la confirmación de reserva
     setSearchData(searchData); // Guardar los datos del formulario
   };
 
-  const handleSelectCar = () => {
-    setSelectedCar(mockCar); // Seleccionar el coche
+  const handleSelectCar = (coche) => {
+    setSelectedCar(coche); // Seleccionar el coche
     setShowPayment(true); // Mostrar el formulario de pago
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll al inicio para ver el formulario
   };
 
-  const handleConfirmReservation = (data) => {
+  const handleConfirmReservation = (data) => { // ¿No se hace la reserva en la confirmacion de pago?
     setReservationData(data); // Guardar los datos de la reserva
     setShowConfirmation(true); // Mostrar la pantalla de confirmación
   };
@@ -39,7 +52,7 @@ export default function Reservar() {
   const handleConfirmPayment = () => {
     // Combinar los datos del formulario de búsqueda y del coche seleccionado
     const reservation = {
-      ...searchData,
+      ...formData,
       car: selectedCar,
     };
     setReservationData(reservation); // Guardar los datos de la reserva
@@ -62,12 +75,17 @@ export default function Reservar() {
 
         {/* Formulario de búsqueda */}
         {!showCar && !showPayment && !showConfirmation && (
-          <SearchForm onSearch={handleSearch} />
+          <SearchForm onSearch={handleSearch} formData={formData} setFormData={setFormData} />
         )}
 
-        {/* Tarjeta del coche */}
-        {showCar && !showPayment && !showConfirmation && (
-          <TarjetaCocheUI coche={mockCar} onSelectCar={handleSelectCar} />
+        {showCar && !showPayment && !showConfirmation && coches.length > 0 && (
+          coches.map((coche) => (
+            <TarjetaCocheUI
+              key={coche.id}
+              coche={coche}
+              onSelectCar={() => handleSelectCar(coche)}
+            />
+          ))
         )}
 
         {/* Formulario de pago */}

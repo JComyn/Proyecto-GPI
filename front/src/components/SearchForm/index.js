@@ -2,15 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import SearchFormUI from './SearchForm';
 
-function SearchForm({ onSearch }) {
-  const [formData, setFormData] = useState({
-    pickupOffice: "",
-    returnOffice: "",
-    pickupDate: "",
-    pickupTime: "",
-    returnDate: "",
-    returnTime: ""
-  });
+function SearchForm({ onSearch, formData, setFormData }) {
+  
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -87,6 +80,8 @@ function SearchForm({ onSearch }) {
 
 SearchForm.propTypes = {
   onSearch: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired
 };
 
 export default SearchForm;

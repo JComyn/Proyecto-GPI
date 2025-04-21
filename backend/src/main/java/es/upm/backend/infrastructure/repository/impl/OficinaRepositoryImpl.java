@@ -42,6 +42,17 @@ public class OficinaRepositoryImpl implements OficinaRepository {
     }
 
     @Override
+    public Oficina findById(Long id) {
+        return oficinaJpaRepository.findById(id).get();
+    }
+
+    @Override
+    public Long getIdByDireccion(String direccion) {
+        Oficina oficina = oficinaJpaRepository.findByDireccion(direccion);
+        return oficina.getId();
+    }
+
+    @Override
     public Oficina save(Oficina newOficina) {
         return oficinaJpaRepository.save(newOficina);
     }

@@ -3,7 +3,9 @@ package es.upm.backend.application.services;
 import es.upm.backend.application.exception.ReservaInvalidaException;
 import es.upm.backend.application.exception.ReservasEmptyException;
 import es.upm.backend.application.exception.VehiculoNoDisponibleException;
+import es.upm.backend.domain.entities.Coche;
 import es.upm.backend.domain.entities.Reserva;
+import es.upm.backend.domain.repository.CocheRepository;
 import es.upm.backend.domain.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,11 @@ import java.util.List;
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
+    private final CocheRepository cocheRepository;
 
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaService(ReservaRepository reservaRepository, CocheRepository cocheRepository) {
         this.reservaRepository = reservaRepository;
+        this.cocheRepository = cocheRepository;
     }
 
     public List<Reserva> findAll() {
@@ -75,5 +79,20 @@ public class ReservaService {
         }
 
         return true;
+    }
+
+    public List<Coche> getCochesDisponibles(Long idOficinaRecogida, LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion){
+        List<Coche> todosLosCoches = cocheRepository.findAll();
+        if(reservaRepository.findAll().isEmpty()) return todosLosCoches;
+        List<Long> idsCochesOcupados = reservaRepository.findCochesOcupados(fechaRecogida, fechaDevolucion);
+
+        List<Coche> cochesDisponibles = todosLosCoches.stream()
+                .filter(coche -> !idsCochesOcupados.contains(coche.getId())) // Coche no esta reservado en esas fechas
+                .filter(coche -> reservaRepository.cocheEstaraEnOficina(coche.getId(), idOficinaRecogida, fechaRecogida)) // Coche estara en la oficina de recogida
+                .toList();
+
+        if(cochesDisponibles.isEmpty()) throw new ReservaInvalidaException("No existen coches disponibles para esos parametros de reserva.");
+
+        return cochesDisponibles;
     }
 }

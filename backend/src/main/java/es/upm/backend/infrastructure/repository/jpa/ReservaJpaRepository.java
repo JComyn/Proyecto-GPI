@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface ReservaJpaRepository extends JpaRepository<Reserva, Long> {
 
@@ -32,5 +33,16 @@ public interface ReservaJpaRepository extends JpaRepository<Reserva, Long> {
     Long findUltimaOficinaAntesDeFecha(
             @Param("idCoche") Long idCoche,
             @Param("fechaReferencia") LocalDateTime fechaReferencia
+    );
+
+    @Query("""
+    SELECT r.coche.id
+    FROM Reserva r
+    WHERE r.fechaHoraRecogida < :fechaFin
+    AND r.fechaHoraDevolucion > :fechaInicio
+    """)
+    List<Long> findCochesOcupados(
+            @Param("fechaInicio") LocalDateTime fechaInicio,
+            @Param("fechaFin") LocalDateTime fechaFin
     );
 }
