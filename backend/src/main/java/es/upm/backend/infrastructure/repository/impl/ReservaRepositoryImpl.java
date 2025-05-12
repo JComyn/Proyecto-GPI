@@ -67,6 +67,9 @@ public Reserva create(Reserva reserva, Long idCoche, Long idCliente, Long idOfic
     @Override
     public boolean cocheEstaraEnOficina(Long idCoche, Long idOficina, LocalDateTime fechaRecogida) {
         Long idOficinaDondeEstara = reservaJpaRepository.findUltimaOficinaAntesDeFecha(idCoche, fechaRecogida);
+        if(idOficinaDondeEstara==null){
+            return cocheJpaRepository.cocheEstaEnOficina(idCoche, idOficina);
+        }
         return Objects.equals(idOficinaDondeEstara, idOficina);
     }
 
