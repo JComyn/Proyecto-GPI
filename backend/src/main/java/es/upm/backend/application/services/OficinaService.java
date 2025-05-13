@@ -37,7 +37,15 @@ public class OficinaService {
         return oficinaRepository.save(newOficina);
     }
 
+    public String findDireccionById(Long id) {
+        return oficinaRepository.findById(id).getDireccion();
+    }
+
     public void delete(Long idOficina) {
         oficinaRepository.delete(idOficina);
+    }
+
+    public Long getIdByDireccion(String direccion){
+        return oficinaRepository.getIdByDireccion(direccion);
     }
 }

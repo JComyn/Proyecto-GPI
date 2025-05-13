@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useAuth } from "hooks/useAuth";
 import "./styles.css";
 
 function RegistroNegocio() {
   const navigate = useNavigate();
+  const {handleRegistroNegocio, errorAuth} = useAuth();
   const [formData, setFormData] = useState({
     nombreEmpresa: "",
     nif: "",
@@ -118,14 +120,18 @@ function RegistroNegocio() {
     setFormSubmitted(true);
     
     if (validateForm()) {
-      // Aquí se implementará la lógica para enviar los datos al backend
       console.log("Datos de registro de empresa:", formData);
+      const errorAuth = handleRegistroNegocio(formData.nombreEmpresa, formData.nif, formData.email, formData.password);
+      if(!errorAuth){
+        // Mostrar mensaje de éxito
+        alert("Registro de empresa completado con éxito. Ahora puedes iniciar sesión.");
+        // Redirigir al usuario a la página de inicio de sesión
+        navigate("/login");
+      } else {
+        alert("Error: formato incorrecto en la solicitud de registro.");
+        // TODO: lo mismo que en IniciarSesion.js
+      }
       
-      // Mostrar mensaje de éxito
-      alert("Registro de empresa completado con éxito. Ahora puedes iniciar sesión.");
-      
-      // Redirigir al usuario a la página de inicio de sesión
-      navigate("/login");
     }
   };
 

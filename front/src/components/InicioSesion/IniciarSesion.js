@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./IniciarSesion.css";
+import { useAuth } from "hooks/useAuth";
 
 function IniciarSesion() {
+  const {handleLogin} = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -13,7 +15,7 @@ function IniciarSesion() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setError("Por favor, introduce un correo válido.");
@@ -25,7 +27,15 @@ function IniciarSesion() {
     }
     setError("");
     console.log("Iniciando sesión con:", { email, password });
-    // Aquí se integrará con el backend en el futuro
+    const errorAuth = await handleLogin(email, password);
+    if(!errorAuth){
+      alert("Sesión iniciada con éxito, se te redirigira a inicio.");
+      navigate("/");
+    }
+    else{
+      alert("Credenciales incorrectas");
+    } // TODO: Aqui convendria llamar a un handleError mas sofisticado
+    
   };
 
   return (

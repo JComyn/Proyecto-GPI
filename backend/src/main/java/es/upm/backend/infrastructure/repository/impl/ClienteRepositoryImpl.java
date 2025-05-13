@@ -52,4 +52,9 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         return clienteJpaRepository.existsById(idCliente);
     }
 
+    @Override
+    public Cliente findByEmail(String email) {
+        return clienteJpaRepository.findByEmail(email);
+    }
+
 }

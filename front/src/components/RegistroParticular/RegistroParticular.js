@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import "./styles.css";
+import { useAuth } from "hooks/useAuth";
 
 function RegistroParticular() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function RegistroParticular() {
     domicilio: ""
   });
 
+  const {handleRegistroParticular} = useAuth();
   const [errors, setErrors] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -119,19 +121,22 @@ function RegistroParticular() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
     
     if (validateForm()) {
-      // Aquí se implementará la lógica para enviar los datos al backend
       console.log("Datos de registro:", formData);
-      
-      // Mostrar mensaje de éxito
-      alert("Registro completado con éxito. Ahora puedes iniciar sesión.");
-      
-      // Redirigir al usuario a la página de inicio de sesión
-      navigate("/login");
+      const errorAuth = await handleRegistroParticular(formData.nombre, formData.apellidos, formData.domicilio, formData.fechaNacimiento, formData.email, formData.password);
+      if(!errorAuth){
+        // Mostrar mensaje de éxito
+        alert("Registro completado con éxito. Ahora puedes iniciar sesión.");
+        // Redirigir al usuario a la página de inicio de sesión
+        navigate("/login");
+      } else {
+        alert("Error: formato incorrecto en la solicitud de registro.");
+        // TODO: Lo mismo que en IniciarSesion.js
+      }
     }
   };
 

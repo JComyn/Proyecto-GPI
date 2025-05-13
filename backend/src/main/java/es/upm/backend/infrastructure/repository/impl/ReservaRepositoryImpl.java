@@ -67,30 +67,38 @@ public Reserva create(Reserva reserva, Long idCoche, Long idCliente, Long idOfic
     @Override
     public boolean cocheEstaraEnOficina(Long idCoche, Long idOficina, LocalDateTime fechaRecogida) {
         Long idOficinaDondeEstara = reservaJpaRepository.findUltimaOficinaAntesDeFecha(idCoche, fechaRecogida);
+        if(idOficinaDondeEstara==null){
+            return cocheJpaRepository.cocheEstaEnOficina(idCoche, idOficina);
+        }
         return Objects.equals(idOficinaDondeEstara, idOficina);
     }
 
     @Override
-public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion,
-        LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion) {
-    Cliente cliente = clienteJpaRepository.findById(idCliente)
-            .orElseThrow(() -> new ReservaNotFoundException("Cliente con id " + idCliente + " no encontrado."));
-    Coche coche = cocheJpaRepository.findById(idCoche)
-            .orElseThrow(() -> new ReservaNotFoundException("Coche con id " + idCoche + " no encontrado."));
-    Oficina oficinaRecogida = oficinaJpaRepository.findById(idOficinaRecogida)
-            .orElseThrow(() -> new ReservaNotFoundException("Oficina de recogida con id " + idOficinaRecogida + " no encontrada."));
-    Oficina oficinaDevolucion = oficinaJpaRepository.findById(idOficinaDevolucion)
-            .orElseThrow(() -> new ReservaNotFoundException("Oficina de devolución con id " + idOficinaDevolucion + " no encontrada."));
+    public List<Long> findCochesOcupados(LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion) {
+        return reservaJpaRepository.findCochesOcupados(fechaRecogida, fechaDevolucion);
+    }
 
-    Reserva reserva = new Reserva(
-            null,
-            cliente,
-            coche,
-            oficinaRecogida,
-            oficinaDevolucion,
-            fechaHoraRecogida,
-            fechaHoraDevolucion,
-            Estado.APROBADO);
-    return reservaJpaRepository.save(reserva);
-}
+    @Override
+    public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion,
+            LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion) {
+        Cliente cliente = clienteJpaRepository.findById(idCliente)
+                .orElseThrow(() -> new ReservaNotFoundException("Cliente con id " + idCliente + " no encontrado."));
+        Coche coche = cocheJpaRepository.findById(idCoche)
+                .orElseThrow(() -> new ReservaNotFoundException("Coche con id " + idCoche + " no encontrado."));
+        Oficina oficinaRecogida = oficinaJpaRepository.findById(idOficinaRecogida)
+                .orElseThrow(() -> new ReservaNotFoundException("Oficina de recogida con id " + idOficinaRecogida + " no encontrada."));
+        Oficina oficinaDevolucion = oficinaJpaRepository.findById(idOficinaDevolucion)
+                .orElseThrow(() -> new ReservaNotFoundException("Oficina de devolución con id " + idOficinaDevolucion + " no encontrada."));
+
+        Reserva reserva = new Reserva(
+                null,
+                cliente,
+                coche,
+                oficinaRecogida,
+                oficinaDevolucion,
+                fechaHoraRecogida,
+                fechaHoraDevolucion,
+                Estado.APROBADO);
+        return reservaJpaRepository.save(reserva);
+    }
 }

@@ -13,5 +13,6 @@ public interface ReservaRepository {
     void delete(Long idReserva);
     boolean existeReservaSolapada(Long idCoche, LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion);
     boolean cocheEstaraEnOficina(Long idCoche, Long idOficina, LocalDateTime fechaRecogida);
+    List<Long> findCochesOcupados(LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion);
     Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion, LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion);
 }

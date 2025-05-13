@@ -9,5 +9,7 @@ public interface OficinaRepository {
     Oficina create(Oficina oficina);
     void delete(Long idOficina);
     boolean existsByDireccion(String direccion);
+    Oficina findById(Long id);
+    Long getIdByDireccion(String direccion);
     Oficina save(Oficina newOficina);
 }

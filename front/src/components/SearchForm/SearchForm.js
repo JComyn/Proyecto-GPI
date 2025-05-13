@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mockOffices } from './mockData';
-import mockSearchForm from './mockSearchForm';
 import './styles.css';
+import { useOficinas } from 'hooks/useOficinas';
 
 
 function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
+
+  const {oficinas, errorOficinas} = useOficinas();
+
+  if(errorOficinas) alert("No hay oficinas en la BBDD");
+
 
   
     return (
@@ -25,8 +29,8 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
                   className={errors.pickupOffice ? 'error' : ''}
                 >
                   <option value="">Seleccione oficina de recogida</option>
-                  {mockOffices.map(office => (
-                    <option key={office.id} value={office.id}>{office.name}</option>
+                  {oficinas.map(office => (
+                    <option key={office.id} value={office.id}>{office.direccion}</option>
                   ))}
                 </select>
                 {errors.pickupOffice && <p className="error-message">{errors.pickupOffice}</p>}
@@ -71,8 +75,8 @@ function SearchFormUI({ formData, errors, handleChange, handleSubmit }) {
                   className={errors.returnOffice ? 'error' : ''}
                 >
                   <option value="">Seleccione oficina de devolución</option>
-                  {mockOffices.map(office => (
-                    <option key={office.id} value={office.id}>{office.name}</option>
+                  {oficinas.map(office => (
+                    <option key={office.id} value={office.id}>{office.direccion}</option>
                   ))}
                 </select>
                 {errors.returnOffice && <p className="error-message">{errors.returnOffice}</p>}

@@ -1,6 +1,7 @@
 package es.upm.backend.infrastructure.controllers;
 
 import es.upm.backend.application.dto.CreateOficinaDto;
+import es.upm.backend.application.dto.GetOficinaIdByDireccionDto;
 import es.upm.backend.application.dto.ListaOficinas;
 import es.upm.backend.application.services.OficinaService;
 import es.upm.backend.domain.entities.Oficina;
@@ -80,5 +81,15 @@ public class OficinaController {
         // Capturar excepcion de OficinaAlreadyExistsException -> Codigo 400
         Oficina oficina = oficinaService.create(OficinaMapper.createDto2Entity(newOficina));
         return ResponseEntity.ok(oficina);
+    }
+
+    @PostMapping("/getId")
+    public ResponseEntity<Long> getIdByDireccion(GetOficinaIdByDireccionDto req){
+        return ResponseEntity.ok(oficinaService.getIdByDireccion(req.direccion()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getDireccionById(@PathVariable Long id){
+        return ResponseEntity.ok(oficinaService.findDireccionById(id));
     }
 }

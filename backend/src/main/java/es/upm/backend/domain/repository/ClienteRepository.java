@@ -12,4 +12,5 @@ public interface ClienteRepository {
     boolean existsByEmail(String email);
     Cliente save(Cliente cliente);
     boolean existsById(Long idCliente);
+    Cliente findByEmail(String email);
 }
