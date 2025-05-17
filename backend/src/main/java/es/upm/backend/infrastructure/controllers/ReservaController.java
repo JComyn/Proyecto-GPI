@@ -3,7 +3,9 @@ package es.upm.backend.infrastructure.controllers;
 import es.upm.backend.application.dto.*;
 import es.upm.backend.application.exception.ReservaInvalidaException;
 import es.upm.backend.application.services.ReservaService;
+import es.upm.backend.application.services.TarifaService;
 import es.upm.backend.domain.entities.Reserva;
+import es.upm.backend.domain.entities.Tarifa;
 import es.upm.backend.infrastructure.mapper.ReservaMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,9 +22,11 @@ import org.springframework.web.bind.annotation.*;
 public class ReservaController {
 
     private final ReservaService reservaService;
+    private final TarifaService tarifaService;
 
-    public ReservaController(ReservaService reservaService){
+    public ReservaController(ReservaService reservaService, TarifaService tarifaService) {
         this.reservaService = reservaService;
+        this.tarifaService = tarifaService;
     }
 
 
@@ -40,7 +44,6 @@ public class ReservaController {
     })
     @GetMapping()
     public ResponseEntity<ListaReservas> findAll(){
-        // Capturar excepcion de ReservasEmptyException -> Codigo 204
         return ResponseEntity.ok(new ListaReservas(reservaService.findAll()));
     }
 
@@ -58,7 +61,6 @@ public class ReservaController {
     })
     @DeleteMapping("/{idReserva}")
     public ResponseEntity<Void> deleteById(@PathVariable Long idReserva){
-        // Capturar excepcion de ReservaNotFoundException -> codigo 400
         reservaService.delete(idReserva);
         return ResponseEntity.ok().build();
     }
@@ -77,7 +79,6 @@ public class ReservaController {
     })
     @PostMapping()
     public ResponseEntity<Reserva> create(CreateReservaDto newReserva){
-        // Capturar excepcion de ReservaInvalidaException -> codigo 400
         return ResponseEntity.ok(reservaService.create(
                 ReservaMapper.createDto2Entity(newReserva),
                 newReserva.idCoche(),
@@ -100,7 +101,7 @@ public class ReservaController {
     })
     @PostMapping("/validar")
     public ResponseEntity<Void> validarReserva(@RequestBody ValidarReservaDto validarReservaDto){
-        // Capturar excepcion de ReservaInvalidaException -> codigo 400
+
         boolean reservaValida = reservaService.reservaValida(
                 validarReservaDto.idCoche(),
                 validarReservaDto.idOficinaRecogida(),
@@ -125,8 +126,7 @@ public class ReservaController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping("/realizar")
-    public ResponseEntity<Reserva> realizarReserva(@RequestBody RealizarReservaDto realizarReservaDto){
-        // Capturar excepcion de ReservaInvalidaException -> codigo 400
+    public ResponseEntity<ReservaTarifaDto> realizarReserva(@RequestBody RealizarReservaDto realizarReservaDto){
 
         Reserva reservaRealizada = reservaService.realizarReserva(
                 realizarReservaDto.idCoche(),
@@ -134,9 +134,35 @@ public class ReservaController {
                 realizarReservaDto.idOficinaRecogida(),
                 realizarReservaDto.idOficinaDevolucion(),
                 realizarReservaDto.fechaHoraRecogida(),
-                realizarReservaDto.fechaHoraDevolucion()
+                realizarReservaDto.fechaHoraDevolucion(),
+                realizarReservaDto.tipoTarifa()
         );
-        return ResponseEntity.ok(reservaRealizada);
+
+
+        //Calcular precio final y actualizar la reserva
+        double precioFinal;
+        try {
+            // Calcular el precio
+            precioFinal = tarifaService.calcularPrecio(reservaRealizada);
+            reservaRealizada.setPrecio(precioFinal);
+
+            // Guardar la reserva con el precio actualizado
+            reservaService.save(reservaRealizada);
+        } catch (ReservaInvalidaException e) {
+
+            // Eliminar la reserva si ocurre una excepción
+            reservaService.delete(reservaRealizada.getId());
+            // Volver a lanzar la misma excepción para que el handler la procese
+            throw e;
+        }
+
+        // Mapear la reserva a DTO
+        RealizarReservaDto reservaDto = ReservaMapper.entityToDto(reservaRealizada);
+
+        // Crear el DTO de respuesta
+        ReservaTarifaDto tarifaReservaDto = new ReservaTarifaDto(reservaDto, precioFinal);
+
+        return ResponseEntity.ok(tarifaReservaDto);
     }
 
     @PostMapping("/disponibles")

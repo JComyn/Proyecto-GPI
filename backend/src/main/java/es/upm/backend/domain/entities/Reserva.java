@@ -2,16 +2,7 @@ package es.upm.backend.domain.entities;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,8 +34,12 @@ public class Reserva {
     private LocalDateTime fechaHoraRecogida;
     @Column(name = "fechaHoraDevolucion", nullable = false)
     private LocalDateTime fechaHoraDevolucion;
+    @Enumerated(value = EnumType.STRING)
+    private TipoTarifa tipoTarifa;
     @Column(name = "estado", nullable = false)
     private Estado estado;
+    @Column(name = "precio", nullable = false)
+    private double precio;
 
 
     public void inicializarEntidades(Cliente cliente, Coche coche, Oficina oficinaRecogida, Oficina oficinaDevolucion){

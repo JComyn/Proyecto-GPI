@@ -2,6 +2,7 @@ package es.upm.backend.domain.repository;
 
 
 import es.upm.backend.domain.entities.Reserva;
+import es.upm.backend.domain.entities.TipoTarifa;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,5 +15,6 @@ public interface ReservaRepository {
     boolean existeReservaSolapada(Long idCoche, LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion);
     boolean cocheEstaraEnOficina(Long idCoche, Long idOficina, LocalDateTime fechaRecogida);
     List<Long> findCochesOcupados(LocalDateTime fechaRecogida, LocalDateTime fechaDevolucion);
-    Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion, LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion);
+    Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion, LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion, TipoTarifa tipoTarifa);
+    Reserva save(Reserva reserva);
 }

@@ -1,6 +1,7 @@
 package es.upm.backend.infrastructure.mapper;
 
 import es.upm.backend.application.dto.CreateCocheDto;
+import es.upm.backend.domain.entities.CategoriaCoche;
 import es.upm.backend.domain.entities.Coche;
 
 public class CocheMapper {
@@ -11,11 +12,10 @@ public class CocheMapper {
                 newCoche.modelo(),
                 newCoche.marca(),
                 newCoche.transmision(),
-                newCoche.categoria(),
+                CategoriaCoche.valueOf(newCoche.categoria()),
                 newCoche.puertas(),
                 newCoche.techoSolar(),
                 newCoche.extras(),
-                newCoche.tarifa(),
                 null
         );
     }

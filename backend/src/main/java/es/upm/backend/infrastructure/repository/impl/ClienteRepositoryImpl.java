@@ -28,7 +28,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         return clienteJpaRepository.save(cliente);
     }
 
-        @Override
+    @Override
     public void delete(Long idCliente) {
         Optional<Cliente> clienteAEliminar = clienteJpaRepository.findById(idCliente);
         if (clienteAEliminar.isEmpty()) {
@@ -44,7 +44,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Cliente save(Cliente cliente) {
-        return clienteJpaRepository.save(cliente); 
+        return clienteJpaRepository.save(cliente);
     }
 
     @Override
@@ -56,5 +56,4 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     public Cliente findByEmail(String email) {
         return clienteJpaRepository.findByEmail(email);
     }
-
 }
