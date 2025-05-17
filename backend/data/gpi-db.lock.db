@@ -1,6 +1,6 @@
 #FileLock
-#Mon May 12 17:12:00 CEST 2025
-server=192.168.64.1\:56204
-hostName=TERRENEITOR
+#Sat May 17 16:01:00 CEST 2025
+server=172.26.96.1\:51990
+hostName=TERRENEITOR.mshome.net
 method=file
-id=196c50d42ea9926f70e99f98a0401af9593a8dadc48
+id=196de8c4bee3f5cc7961ddcfd9fa637b6fcfe63ed1b

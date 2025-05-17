@@ -5,6 +5,7 @@ import es.upm.backend.application.exception.ReservasEmptyException;
 import es.upm.backend.application.exception.VehiculoNoDisponibleException;
 import es.upm.backend.domain.entities.Coche;
 import es.upm.backend.domain.entities.Reserva;
+import es.upm.backend.domain.entities.TipoTarifa;
 import es.upm.backend.domain.repository.CocheRepository;
 import es.upm.backend.domain.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ReservaService {
     }
 
     public Reserva create(Reserva newReserva, Long idCoche, Long idCliente, Long idOficinaRecogida,
-            Long idOficinaDevolucion) {
+                          Long idOficinaDevolucion) {
         return reservaRepository.create(newReserva, idCoche, idCliente, idOficinaRecogida, idOficinaDevolucion);
     }
 
@@ -41,7 +42,7 @@ public class ReservaService {
     }
 
     public Reserva realizarReserva(Long idCoche, Long idCliente, Long idOficinaRecogida, Long idOficinaDevolucion,
-            LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion) {
+                                   LocalDateTime fechaHoraRecogida, LocalDateTime fechaHoraDevolucion, TipoTarifa tipoTarifa) {
         // Validar la disponibilidad del vehículo
         if (reservaRepository.existeReservaSolapada(idCoche, fechaHoraRecogida, fechaHoraDevolucion)) {
             throw new VehiculoNoDisponibleException();
@@ -54,11 +55,11 @@ public class ReservaService {
 
         // Crear la reserva si es válida
         return reservaRepository.realizarReserva(idCoche, idCliente, idOficinaRecogida, idOficinaDevolucion,
-                fechaHoraRecogida, fechaHoraDevolucion);
+                fechaHoraRecogida, fechaHoraDevolucion, tipoTarifa);
     }
 
     public boolean reservaValida(Long idCoche, Long idOficina, LocalDateTime fechaRecogida,
-            LocalDateTime fechaDevolucion) {
+                                 LocalDateTime fechaDevolucion) {
         // Validar que las fechas sean válidas
         if (fechaRecogida.isAfter(fechaDevolucion)) {
             throw new ReservaInvalidaException("La fecha de recogida no puede ser posterior a la fecha de devolución.");
@@ -95,4 +96,9 @@ public class ReservaService {
 
         return cochesDisponibles;
     }
+
+    public void save(Reserva reserva) {
+        reservaRepository.save(reserva);
+    }
+
 }

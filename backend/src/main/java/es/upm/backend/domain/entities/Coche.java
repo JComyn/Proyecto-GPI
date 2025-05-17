@@ -28,17 +28,18 @@ public class Coche {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "transmision", nullable = false)
     private Transmision transmision;
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "categoria", nullable = false)
-    private String categoria;
+    private CategoriaCoche categoria;
     @Column(name = "puertas")
     private short puertas;
     @Column(name = "techoSolar", nullable = false)
     private boolean techoSolar;
     @ElementCollection
     private List<String> extras;
-
+    /*@Enumerated(value = EnumType.STRING)
     @Embedded
-    private Tarifa tarifa;
+    private TipoTarifa tarifa;*/
 
     @ManyToOne
     @JoinColumn(name = "oficina_id")
