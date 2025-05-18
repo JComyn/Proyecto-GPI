@@ -37,13 +37,10 @@ export const sidebarData = [
         icon: <GarageIcon />,
         link: "/flota"
     },
-    ...(isAuthenticated
-        ? [
-            {
-                title: "Mis Reservas",
-                icon: <GarageIcon />,
-                link: "/mis-reservas"
-            }
-        ]
-        : [])
+    {
+        title: "Mis Reservas",
+        icon: <DirectionsCarIcon />,
+        link: "/mis-reservas",
+        isVisible: isAuthenticated // Solo se muestra si el usuario está autenticado
+    }
 ];

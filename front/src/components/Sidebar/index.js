@@ -1,9 +1,12 @@
 import React from 'react';
 import './sidebar.css';
 import { sidebarData } from './sidebarData';
-
+import { getUserId } from 'services/contextService';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 function Sidebar() {
+    const isAuthenticated = !!getUserId(); // Verifica si el usuario está autenticado
+
     return (
         <div className="sideBar">
 
@@ -19,6 +22,12 @@ function Sidebar() {
                     </li>
                 );
             })}
+            {isAuthenticated && (
+                <li className="fila" onClick={() => { window.location.pathname = "/mis-reservas"; }}>
+                    <div className='icono'><DirectionsCarIcon /></div>
+                    <div className='texto'>Mis Reservas</div>
+                </li>
+            )}
             </ul>
         </div>
     )
