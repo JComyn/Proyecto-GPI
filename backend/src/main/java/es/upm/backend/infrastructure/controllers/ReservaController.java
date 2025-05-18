@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,7 +116,8 @@ public class ReservaController {
 
     @Operation(
             summary = "Realiza una reserva de manera efectiva",
-            description = "Realiza una reserva de manera efectiva en la base de datos utilizando los datos proporcionados."
+            description = "Realiza una reserva de manera efectiva en la base de datos utilizando los datos proporcionados." +
+                    " Se valida la reserva antes de realizarla y se calcula el precio final aplicando un posible descuento."
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -140,10 +142,14 @@ public class ReservaController {
 
 
         //Calcular precio final y actualizar la reserva
+        String codigoDescuento = realizarReservaDto.codigoDescuento();
         double precioFinal;
+        boolean descuentoAplicado = false;
         try {
             // Calcular el precio
-            precioFinal = tarifaService.calcularPrecio(reservaRealizada);
+            Pair<Double, Boolean> calculo = tarifaService.calcularPrecio(reservaRealizada, codigoDescuento);
+            precioFinal = calculo.a;
+            descuentoAplicado = calculo.b;
             reservaRealizada.setPrecio(precioFinal);
 
             // Guardar la reserva con el precio actualizado
@@ -156,11 +162,8 @@ public class ReservaController {
             throw e;
         }
 
-        // Mapear la reserva a DTO
-        RealizarReservaDto reservaDto = ReservaMapper.entityToDto(reservaRealizada);
-
         // Crear el DTO de respuesta
-        ReservaTarifaDto tarifaReservaDto = new ReservaTarifaDto(reservaDto, precioFinal);
+        ReservaTarifaDto tarifaReservaDto = new ReservaTarifaDto(reservaRealizada, descuentoAplicado, precioFinal);
 
         return ResponseEntity.ok(tarifaReservaDto);
     }

@@ -21,7 +21,7 @@ public class ReservaMapper {
         );
     }
 
-    public static RealizarReservaDto entityToDto(Reserva reserva) {
+    /*public static RealizarReservaDto entityToDto(Reserva reserva) {
         return new RealizarReservaDto(
                 reserva.getCoche().getId(),
                 reserva.getCliente().getId(),
@@ -31,5 +31,5 @@ public class ReservaMapper {
                 reserva.getFechaHoraDevolucion(),
                 reserva.getTipoTarifa()
         );
-    }
+    }*/
 }
