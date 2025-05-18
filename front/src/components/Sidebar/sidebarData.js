@@ -4,7 +4,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HelpIcon from '@mui/icons-material/Help';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import GarageIcon from '@mui/icons-material/Garage'; // Importa el icono de Garage
+import { getUserId } from 'services/contextService';
 
+// Verifica si el usuario está autenticado
+const isAuthenticated = !!getUserId();
 
 export const sidebarData = [
     {
@@ -33,5 +36,11 @@ export const sidebarData = [
         title: "Visualizar flota",
         icon: <GarageIcon />,
         link: "/flota"
+    },
+    {
+        title: "Mis Reservas",
+        icon: <DirectionsCarIcon />,
+        link: "/mis-reservas",
+        isVisible: isAuthenticated // Solo se muestra si el usuario está autenticado
     }
 ];
