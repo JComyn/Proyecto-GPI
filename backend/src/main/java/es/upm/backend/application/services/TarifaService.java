@@ -1,6 +1,7 @@
 package es.upm.backend.application.services;
 import es.upm.backend.application.exception.ReservaInvalidaException;
 import es.upm.backend.domain.entities.*;
+import org.antlr.v4.runtime.misc.Pair;
 import org.springframework.stereotype.Service;
 //import es.upm.backend.domain.repository.ClienteRepository;
 //import es.upm.backend.domain.repository.CocheRepository;
@@ -15,8 +16,9 @@ import java.util.Map;
 @Service
 public class TarifaService {
 
-    public TarifaService() {
-        // Constructor vacío
+    private final CodigoDescuentoService codigoDescuentoService;
+    public TarifaService(CodigoDescuentoService codigoDescuentoService) {
+        this.codigoDescuentoService = codigoDescuentoService;
     }
 
     // La tarifa (tipo de tarifa) puede ser por día más kilometraje, por día con kilómetros ilimitados, semanal, de fin de semana o de larga duración (por meses).
@@ -24,7 +26,7 @@ public class TarifaService {
     // La tarifa para un coche depende de la categoría de precio (gama alta, media o baja), el tipo de tarifa y el tipo de cliente (cliente particular o de negocio).
     // En este último caso se aplicará un descuento especial del 30% sobre la tarifa normal, excepto en la tarifa de fin de semana
 
-    public double calcularPrecio(Reserva reserva){
+    public Pair<Double, Boolean> calcularPrecio(Reserva reserva, String codigoDescuento){
 
         //Categorias de precios segun epoca del año
         Map<Integer, Integer> precioPorTemporada = new HashMap<>();
@@ -142,7 +144,20 @@ public class TarifaService {
             precioBase *= 0.7;
         }
 
-        return precioBase;
+        // Aplicar descuento por código de descuento
+
+        //Comprobar si el codigo de reserva es valido
+        boolean aplicado = false;
+        if (codigoDescuento != null && !codigoDescuento.isEmpty()) {
+            CodigoDescuento codigo = codigoDescuentoService.findByCodigo(codigoDescuento);
+            if (codigo != null) {
+                float descuento = codigo.getDescuento(); // Por ejemplo 0.1 -> 10%
+                precioBase *= (1 - descuento);
+                aplicado = true;
+            }
+        }
+
+        return new Pair<>(precioBase, aplicado);
     }
 }
 
