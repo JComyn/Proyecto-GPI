@@ -3,15 +3,15 @@ spring:
     name: backend # Nombre de la aplicación
 
   datasource:
-    url: jdbc:h2:file:./data/gpi-db;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE # H2 persistente en archivo
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: sa
+    url: jdbc:postgresql://localhost:5432/gpi_basededatos # Cambia si usas otro host o servicio Docker
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
     hikari:
       maximum-pool-size: 10 # Ajuste del pool de conexiones
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect # Dialecto para H2
+    database-platform: org.hibernate.dialect.PostgreSQLDialect # Dialecto para PostgreSQL
     hibernate:
       ddl-auto: update # Mantiene los datos entre reinicios
     show-sql: true # Muestra las consultas SQL en la consola
@@ -19,14 +19,9 @@ spring:
       hibernate:
         format_sql: true # Formatea las consultas SQL en la consola
 
-  h2:
-    console:
-      enabled: true # Habilita la consola H2
-      path: /h2-console # Acceso en: http://localhost:8080/h2-console
-
   sql:
     init:
-      mode: always # Ejecuta scripts de inicialización en H2 si existen
+      mode: always # Ejecuta scripts de inicialización si están disponibles
 
 springdoc:
   swagger-ui:
