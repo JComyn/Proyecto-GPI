@@ -36,6 +36,7 @@ public class Reserva {
     private LocalDateTime fechaHoraDevolucion;
     @Enumerated(value = EnumType.STRING)
     private TipoTarifa tipoTarifa;
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private Estado estado;
     @Column(name = "precio", nullable = false)

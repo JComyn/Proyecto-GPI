@@ -27,6 +27,9 @@ dependencies {
 	// Spring Boot Starter Data JPA para trabajar con bases de datos
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+	// Postgres
+	implementation 'org.postgresql:postgresql:42.7.3'
+
 	// H2 Database para pruebas y desarrollo
 	runtimeOnly 'com.h2database:h2'
 
