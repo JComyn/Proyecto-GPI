@@ -50,4 +50,33 @@
     color: #ffffff;    
 }
 
+.sidebar-user-info {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.85rem; /* Más pequeño */
+    padding: 10px 0;
+    background: rgba(0,0,0,0.1);
+}
+
+.logout-button {
+    margin-left: 10px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 4px 10px; /* Más pequeño */
+    cursor: pointer;
+    font-size: 0.85rem; /* Más pequeño */
+    transition: background 0.2s;
+}
+.logout-button:hover {
+    background: #c0392b;
+}
+
 

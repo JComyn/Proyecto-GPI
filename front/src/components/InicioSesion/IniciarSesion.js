@@ -31,6 +31,7 @@ function IniciarSesion() {
     if(!errorAuth){
       alert("Sesión iniciada con éxito, se te redirigira a inicio.");
       navigate("/");
+      window.location.reload();
     }
     else{
       alert("Credenciales incorrectas");

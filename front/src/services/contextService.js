@@ -9,9 +9,9 @@ export const removeContext = () => {
 }
 
 export const getUserId = () => {
-    localStorage.getItem("userId");
+    return localStorage.getItem("userId");
 };
 
 export const getEmail = () => {
-    localStorage.setItem("email", email);
+    return localStorage.getItem("email");
 };
