@@ -12,13 +12,8 @@ function TarjetaCocheUI({ coche, onSelectCar, mostrarBoton = true }) {
 
   // Comprobación para asegurar que coche y sus propiedades de tarifa existen
   if (!coche || typeof coche.tarifaDiaria === 'undefined' || typeof coche.tarifaSemanal === 'undefined' || typeof coche.tarifaMensual === 'undefined') {
-    // Puedes renderizar un mensaje de carga, un error, o null
-    // dependiendo de cómo quieras manejar datos incompletos.
-    // Por ahora, si los datos no están, no renderizamos las tarifas para evitar el error.
-    // Idealmente, deberías tener un estado de carga o manejar esto en el componente padre.
-    console.error("Datos del coche o tarifas incompletos:", coche);
-    // Opcional: retornar un placeholder o null si los datos no están listos
-    // return <div>Cargando tarifas...</div>; 
+    // Renderizamos un mensaje de carga si los datos no están disponibles
+    return <div className="loading-placeholder">Cargando datos del coche...</div>;
   }
 
   return (
