@@ -34,6 +34,7 @@
 
 .car-card-section {
   flex: 1;
+  min-width: 0; /* Puede ayudar a los contenedores flex/grid a encogerse correctamente */
 }
 
 .car-card-section h3 {
@@ -52,13 +53,16 @@
 }
 
 .car-card-section ul {
-  list-style-type: disc;
-  padding-left: 20px;
+  list-style: disc; /* O el que prefieras */
+  padding-left: 20px; /* Ajusta el padding si es necesario */
+  margin: 0; /* Resetea el margen por defecto del ul si es necesario */
 }
 
-.car-card-section ul li {
-  font-size: 1rem;
-  color: #f0f0f0;
+.car-card-section li {
+  word-wrap: break-word; /* Para navegadores antiguos */
+  overflow-wrap: break-word; /* Estándar actual, rompe la palabra si es necesario para evitar desbordamiento */
+  white-space: normal; /* Asegura que el texto pueda pasar a la siguiente línea */
+  margin-bottom: 4px; /* Espacio entre extras */
 }
 
 .car-card-actions {

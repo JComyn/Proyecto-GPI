@@ -10,6 +10,17 @@ function TarjetaCocheUI({ coche, onSelectCar, mostrarBoton = true }) {
     onSelectCar();
   };
 
+  // Comprobación para asegurar que coche y sus propiedades de tarifa existen
+  if (!coche || typeof coche.tarifaDiaria === 'undefined' || typeof coche.tarifaSemanal === 'undefined' || typeof coche.tarifaMensual === 'undefined') {
+    // Puedes renderizar un mensaje de carga, un error, o null
+    // dependiendo de cómo quieras manejar datos incompletos.
+    // Por ahora, si los datos no están, no renderizamos las tarifas para evitar el error.
+    // Idealmente, deberías tener un estado de carga o manejar esto en el componente padre.
+    console.error("Datos del coche o tarifas incompletos:", coche);
+    // Opcional: retornar un placeholder o null si los datos no están listos
+    // return <div>Cargando tarifas...</div>; 
+  }
+
   return (
     <div className="car-card-container">
       <h2 className="car-card-title">{coche.marca} {coche.modelo}</h2>
@@ -22,14 +33,16 @@ function TarjetaCocheUI({ coche, onSelectCar, mostrarBoton = true }) {
         </div>
         <div className="car-card-section">
           <h3>Tarifas</h3>
-          <p><strong>Diaria:</strong> {coche.tarifa.diaria} €/día</p>
-          <p><strong>Semanal:</strong> {coche.tarifa.semanal} €/semana</p>
-          <p><strong>Mensual:</strong> {coche.tarifa.mensual} €/mes</p>
+          {/* Accedemos directamente a las propiedades de tarifa del objeto coche */}
+          <p><strong>Diaria:</strong> {coche.tarifaDiaria !== undefined ? `${coche.tarifaDiaria} €/día` : 'N/A'}</p>
+          <p><strong>Semanal:</strong> {coche.tarifaSemanal !== undefined ? `${coche.tarifaSemanal} €/semana` : 'N/A'}</p>
+          <p><strong>Mensual:</strong> {coche.tarifaMensual !== undefined ? `${coche.tarifaMensual} €/mes` : 'N/A'}</p>
         </div>
         <div className="car-card-section">
           <h3>Extras</h3>
           <ul>
-            {coche.extras.map((extra, index) => (
+            {/* Asegurarse de que coche.extras es un array antes de mapear */}
+            {Array.isArray(coche.extras) && coche.extras.map((extra, index) => (
               <li key={index}>{extra}</li>
             ))}
           </ul>
@@ -54,11 +67,10 @@ TarjetaCocheUI.propTypes = {
     puertas: PropTypes.number.isRequired,
     transmision: PropTypes.string.isRequired,
     techoSolar: PropTypes.bool.isRequired,
-    tarifa: PropTypes.shape({
-      diaria: PropTypes.number.isRequired,
-      semanal: PropTypes.number.isRequired,
-      mensual: PropTypes.number.isRequired,
-    }).isRequired,
+    // Actualizamos las propTypes para las tarifas planas
+    tarifaDiaria: PropTypes.number, // Puede ser undefined si aún no se cargó
+    tarifaSemanal: PropTypes.number, // Puede ser undefined si aún no se cargó
+    tarifaMensual: PropTypes.number, // Puede ser undefined si aún no se cargó
     extras: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
   onSelectCar: PropTypes.func.isRequired,

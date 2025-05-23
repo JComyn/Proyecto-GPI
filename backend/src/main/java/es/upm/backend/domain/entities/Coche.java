@@ -37,9 +37,19 @@ public class Coche {
     private boolean techoSolar;
     @ElementCollection
     private List<String> extras;
+
+    @Column(name = "tarifa_diaria")
+    private Double tarifaDiaria;
+
+    @Column(name = "tarifa_semanal")
+    private Double tarifaSemanal;
+
+    @Column(name = "tarifa_mensual")
+    private Double tarifaMensual;
+
     /*@Enumerated(value = EnumType.STRING)
     @Embedded
-    private TipoTarifa tarifa;*/
+    private TipoTarifa tarifa;*/ // Este bloque comentado parece ser un enfoque anterior y no coincide con las columnas de tarifas numéricas.
 
     @ManyToOne
     @JoinColumn(name = "oficina_id")
