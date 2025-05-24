@@ -32,6 +32,43 @@ function ConfirmacionReserva({ reservationData, onBack }) {
   const pickupOfficeName = oficinas.find((office) => office.id === pickupOfficeId)?.direccion || "Oficina desconocida";
   const returnOfficeName = oficinas.find((office) => office.id === returnOfficeId)?.direccion || "Oficina desconocida";
 
+  // Calcular días de diferencia entre fechas
+  function calcularDias(fechaInicio, fechaFin) {
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+    const diffTime = Math.abs(fin - inicio);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  // Calcular precio según tarifas
+  function calcularPrecio(dias, tarifas) {
+    if (!tarifas) return 0;
+    // Si hay tarifa mensual y la reserva es de 30 días o más
+    if (tarifas.tarifaMensual && dias >= 30) {
+      const meses = Math.floor(dias / 30);
+      const diasRestantes = dias % 30;
+      return meses * tarifas.tarifaMensual + calcularPrecio(diasRestantes, tarifas);
+    }
+    // Si hay tarifa semanal y la reserva es de 7 días o más
+    if (tarifas.tarifaSemanal && dias >= 7) {
+      const semanas = Math.floor(dias / 7);
+      const diasRestantes = dias % 7;
+      return semanas * tarifas.tarifaSemanal + calcularPrecio(diasRestantes, tarifas);
+    }
+    // Si hay tarifa diaria
+    if (tarifas.tarifaDiaria) {
+      return dias * tarifas.tarifaDiaria;
+    }
+    return 0;
+  }
+
+  const diasReserva = calcularDias(pickupDate, returnDate);
+  const precioEstimado = calcularPrecio(diasReserva, {
+    tarifaDiaria: car.tarifaDiaria,
+    tarifaSemanal: car.tarifaSemanal,
+    tarifaMensual: car.tarifaMensual,
+  });
+
   return (
     <div className="confirmation-container">
       <h2 className="confirmation-title">Confirmación de Reserva</h2>
@@ -52,6 +89,7 @@ function ConfirmacionReserva({ reservationData, onBack }) {
           <p><strong>Transmisión:</strong> {car.transmision}</p>
           <p><strong>Extras:</strong> {car.extras.join(", ")}</p>
         </div>
+        <p><strong>Precio:</strong> {precioEstimado} €</p>
         </div>
         <div className="confirmation-button-container">
         <button className="confirmation-button" onClick={onBack}>

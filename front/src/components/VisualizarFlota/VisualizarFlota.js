@@ -4,17 +4,22 @@ import TarjetaCocheUI from "../TarjetaCoche/TarjetaCocheUI"; // Reutilizamos la 
 import { useFlota } from "hooks/useFlota";
 
 function VisualizarFlota() {
+  // Añade más campos de filtro al estado
   const [filtro, setFiltro] = useState("");
-  const {flota, error} = useFlota();
+  const [categoria, setCategoria] = useState("");
+  const [transmision, setTransmision] = useState("");
+  const [puertas, setPuertas] = useState("");
+  const { flota, error } = useFlota();
 
-  if(error) alert("No hay coches en la BBDD");
+  if (error) alert("No hay coches en la BBDD");
 
-  const handleFiltroChange = (e) => {
-    setFiltro(e.target.value);
-  };
-
-  const cochesFiltrados = (flota).filter((coche) =>
-    coche.marca.toLowerCase().includes(filtro.toLowerCase())
+  const cochesFiltrados = flota.filter(
+    (coche) =>
+      (coche.marca.toLowerCase().includes(filtro.toLowerCase()) ||
+        coche.modelo.toLowerCase().includes(filtro.toLowerCase())) &&
+      (categoria === "" || coche.categoria === categoria) &&
+      (transmision === "" || coche.transmision === transmision) &&
+      (puertas === "" || coche.puertas === parseInt(puertas))
   );
 
   return (
@@ -23,11 +28,34 @@ function VisualizarFlota() {
       <div className="filtro-container">
         <input
           type="text"
-          placeholder="Filtrar por marca..."
+          placeholder="Filtrar por marca o modelo..."
           value={filtro}
-          onChange={handleFiltroChange}
+          onChange={(e) => setFiltro(e.target.value)}
           className="filtro-input"
         />
+        <select
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Media</option>
+          <option value="BAJA">Baja</option>
+        </select>
+        <select
+          value={transmision}
+          onChange={(e) => setTransmision(e.target.value)}
+        >
+          <option value="">Todas</option>
+          <option value="AUTOMATICA">Automática</option>
+          <option value="MANUAL">Manual</option>
+        </select>
+        <select value={puertas} onChange={(e) => setPuertas(e.target.value)}>
+          <option value="">Cualquier número de puertas</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
       </div>
       <div className="flota-grid">
         {cochesFiltrados.map((coche, index) => (
