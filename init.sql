@@ -174,12 +174,12 @@ INSERT INTO reservas (
     (SELECT id FROM coches WHERE modelo = 'Model 3'),
     (SELECT id FROM oficinas WHERE direccion = 'Calle Mayor 1, Madrid'),
     (SELECT id FROM oficinas WHERE direccion = 'Avenida del Parque 23, Barcelona'),
-    '2025-05-25 10:00:00', '2025-05-30 10:00:00', 'DIARIA_KILOMETRAJE', 'EN_PROCESO', 500.0
+    '2025-05-25 10:00:00', '2025-05-30 10:00:00', 'DIARIA_KILOMETRAJE', 'EN_PROCESO', 400.0
 ),
 (
     (SELECT id FROM clientes WHERE email = 'empresa@example.com'),
     (SELECT id FROM coches WHERE modelo = 'Ibiza'),
     (SELECT id FROM oficinas WHERE direccion = 'Avenida del Parque 23, Barcelona'),
     (SELECT id FROM oficinas WHERE direccion = 'Avenida del Parque 23, Barcelona'),
-    '2025-06-01 09:00:00', '2025-06-05 09:00:00', 'FIN_DE_SEMANA', 'APROBADO', 300.0
+    '2025-06-01 09:00:00', '2025-06-05 09:00:00', 'FIN_DE_SEMANA', 'APROBADO', 200.0
 );

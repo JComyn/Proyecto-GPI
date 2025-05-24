@@ -66,4 +66,9 @@ function combinarFechaYHora(fecha, hora) {
       }
 
   };
-  
+
+  export const obtenerReservas = async () => {
+    const response = await fetch("http://localhost:8080/reservas");
+    if (!response.ok) throw new Error("Error al obtener reservas");
+    return (await response.json()).reservas || [];
+};
