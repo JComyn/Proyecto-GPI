@@ -22,6 +22,9 @@ function ConfirmacionReserva({ reservationData, onBack }) {
     pickupTime,
     returnTime,
     car,
+    precioFinal, // AÑADIR: Recibir el precio final con descuento
+    codigoDescuento,
+    descuentoAplicado
   } = reservationData;
 
   // Convertir los IDs a números para garantizar la comparación correcta
@@ -63,7 +66,8 @@ function ConfirmacionReserva({ reservationData, onBack }) {
   }
 
   const diasReserva = calcularDias(pickupDate, returnDate);
-  const precioEstimado = calcularPrecio(diasReserva, {
+  // CAMBIO: Usar el precio final si está disponible, sino calcular
+  const precioEstimado = precioFinal || calcularPrecio(diasReserva, {
     tarifaDiaria: car.tarifaDiaria,
     tarifaSemanal: car.tarifaSemanal,
     tarifaMensual: car.tarifaMensual,
@@ -89,14 +93,23 @@ function ConfirmacionReserva({ reservationData, onBack }) {
           <p><strong>Transmisión:</strong> {car.transmision}</p>
           <p><strong>Extras:</strong> {car.extras.join(", ")}</p>
         </div>
-        <p><strong>Precio:</strong> {precioEstimado} €</p>
-        </div>
-        <div className="confirmation-button-container">
+        
+        {/* AÑADIR: Mostrar información del descuento si se aplicó */}
+        {codigoDescuento && descuentoAplicado > 0 && (
+          <div className="confirmation-card-section">
+            <h3>Descuento Aplicado</h3>
+            <p><strong>Código:</strong> {codigoDescuento}</p>
+            <p><strong>Descuento:</strong> {descuentoAplicado}%</p>
+          </div>
+        )}
+        
+        <p><strong>Precio Final:</strong> {precioEstimado.toFixed(2)} €</p>
+      </div>
+      <div className="confirmation-button-container">
         <button className="confirmation-button" onClick={onBack}>
             VOLVER AL INICIO
-          </button>
-        </div>
-          
+        </button>
+      </div>
     </div>
     
   );

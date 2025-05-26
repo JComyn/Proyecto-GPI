@@ -140,31 +140,22 @@ public class ReservaController {
                 realizarReservaDto.tipoTarifa()
         );
 
-
-        //Calcular precio final y actualizar la reserva
-        String codigoDescuento = realizarReservaDto.codigoDescuento();
-        double precioFinal;
+        // Usar el precio calculado del frontend
+        double precioFinal = realizarReservaDto.precioCalculado() != null ? 
+                            realizarReservaDto.precioCalculado() : 0.0;
+        
+        // Aplicar descuento si hay código válido
         boolean descuentoAplicado = false;
-        try {
-            // Calcular el precio
-            Pair<Double, Boolean> calculo = tarifaService.calcularPrecio(reservaRealizada, codigoDescuento);
-            precioFinal = calculo.a;
-            descuentoAplicado = calculo.b;
-            reservaRealizada.setPrecio(precioFinal);
-
-            // Guardar la reserva con el precio actualizado
-            reservaService.save(reservaRealizada);
-        } catch (ReservaInvalidaException e) {
-
-            // Eliminar la reserva si ocurre una excepción
-            reservaService.delete(reservaRealizada.getId());
-            // Volver a lanzar la misma excepción para que el handler la procese
-            throw e;
+        if (realizarReservaDto.codigoDescuento() != null) {
+            // Verificar si el código existe y aplicar descuento
+            // (puedes usar tu lógica de códigos de descuento aquí)
+            descuentoAplicado = true; // temporal
         }
+        
+        reservaRealizada.setPrecio(precioFinal);
+        reservaService.save(reservaRealizada);
 
-        // Crear el DTO de respuesta
         ReservaTarifaDto tarifaReservaDto = new ReservaTarifaDto(reservaRealizada, descuentoAplicado, precioFinal);
-
         return ResponseEntity.ok(tarifaReservaDto);
     }
 

@@ -1,15 +1,34 @@
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchForm from '../components/SearchForm';
 import TarjetaCocheUI from "../components/TarjetaCoche";
-import FormularioPago from "../components/FormularioPago"; // Asegúrate de que el nombre coincida con el archivo exportado
-import mockCar from '../components/TarjetaCoche/mockCar';
+import FormularioPago from "../components/FormularioPago";
 import ConfirmacionReserva from '../components/ConfReserva/ConfirmacionReserva';
-import mockSearchForm from '../components/SearchForm/mockSearchForm';
 import { useReserva } from 'hooks/useReserva';
+import { getUserId } from 'services/contextService';
+import { useNavigate } from 'react-router-dom';
 
 export default function Reservar() {
+  const navigate = useNavigate();
+  const isAuthenticated = !!getUserId();
+
+  // Verificar autenticación al cargar la página
+  useEffect(() => {
+    if (!isAuthenticated) {
+      alert("Debes iniciar sesión para realizar una reserva");
+      navigate("/login");
+      return;
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Si no está autenticado, no renderizar nada
+  if (!isAuthenticated) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <h2>Acceso denegado</h2>
+        <p>Debes iniciar sesión para acceder a esta página.</p>
+      </div>
+    );
+  }
 
   const [showCar, setShowCar] = useState(false); // Estado para controlar la visibilidad de la tarjeta
   const [showPayment, setShowPayment] = useState(false); // Estado para controlar la visibilidad del formulario de pago
@@ -17,7 +36,7 @@ export default function Reservar() {
   const [searchData, setSearchData] = useState(null); // Datos del formulario de búsqueda
   const [selectedCar, setSelectedCar] = useState(null); // Coche seleccionado
   const [reservationData, setReservationData] = useState(null); // Datos de la reserva
-  const {coches, errorReserva, buscarCochesDisponibles} = useReserva();
+  const {coches, errorReserva, buscarCochesDisponibles, realizarReserva} = useReserva();
   const [formData, setFormData] = useState({
       pickupOffice: "",
       returnOffice: "",
@@ -49,15 +68,21 @@ export default function Reservar() {
     setShowConfirmation(true); // Mostrar la pantalla de confirmación
   };
 
-  const handleConfirmPayment = () => {
-    // Combinar los datos del formulario de búsqueda y del coche seleccionado
-    const reservation = {
-      ...formData,
-      car: selectedCar,
-    };
-    setReservationData(reservation); // Guardar los datos de la reserva
-    setShowConfirmation(true); // Mostrar la pantalla de confirmación
-    setShowPayment(false); // Ocultar el formulario de pago
+  const handleConfirmPayment = async (reservaRealizada) => {
+    // Si se realizó la reserva, mostrar confirmación con los datos reales
+    if (reservaRealizada) {
+      const reservation = {
+        ...formData,
+        car: selectedCar,
+        reservaId: reservaRealizada.id,
+        precioFinal: reservaRealizada.precioFinal, // Usar el precio final con descuento
+        codigoDescuento: reservaRealizada.codigoDescuento,
+        descuentoAplicado: reservaRealizada.descuentoAplicado
+      };
+      setReservationData(reservation);
+      setShowConfirmation(true);
+      setShowPayment(false);
+    }
   };
 
   const handleBackToHome = () => {
@@ -90,7 +115,11 @@ export default function Reservar() {
 
         {/* Formulario de pago */}
         {showPayment && !showConfirmation && (
-          <FormularioPago onConfirmPayment={handleConfirmPayment} />
+          <FormularioPago 
+            onConfirmPayment={handleConfirmPayment}
+            formData={formData}
+            selectedCar={selectedCar}
+          />
         )}
 
         {/* Confirmación de reserva */}

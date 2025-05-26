@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-// Importamos componentes básicos de Material UI sin usar los MD* personalizados
+// Importamos componentes básicos de Material UI
 import {
   Card,
   CardContent,
   Grid,
   TextField,
   Typography,
-  InputAdornment
+  InputAdornment,
+  Button,
+  Alert
 } from "@mui/material";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 // Styles
 import "./styles.css";
+import { realizarReserva } from 'services/reservaService';
+import { verificarCodigoDescuento } from 'services/codigoDescuentoService';
 
 // Funciones de validación
 const validateCardNumber = (cardNumber) => {
@@ -65,15 +71,31 @@ const validateExpiryDate = (expiryDate) => {
   return true;
 };
 
-function FormularioPago({ onConfirmPayment }) {
+function FormularioPago({ onConfirmPayment, formData, selectedCar }) {
   const [cardData, setCardData] = useState({
-    cardNumber: "4111 1111 1111 1111",
-    cardholderName: "Juan Pérez",
-    expiryDate: "12/25",
-    cvv: "123",
+    cardholderName: "",
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
+    codigoDescuento: ""
   });
   
   const [errors, setErrors] = useState({});
+  const [codigoEstado, setCodigoEstado] = useState({
+    verificado: false,
+    valido: false,
+    descuento: 0,
+    mensaje: ""
+  });
+  const [verificandoCodigo, setVerificandoCodigo] = useState(false);
+
+  // AÑADIR: Calcular el precio al inicio del componente
+  const dias = calcularDias(formData.pickupDate, formData.returnDate);
+  const precioCalculado = calcularPrecio(dias, {
+    tarifaDiaria: selectedCar.tarifaDiaria,
+    tarifaSemanal: selectedCar.tarifaSemanal,
+    tarifaMensual: selectedCar.tarifaMensual,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,18 +162,134 @@ function FormularioPago({ onConfirmPayment }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Process payment here in a real application
-      console.log("Procesando pago:", cardData);
-      onConfirmPayment(); // Llamar a la función para mostrar la confirmación de reserva
-      
-      // Mostrar mensaje de confirmación
-      alert("¡Pago procesado correctamente! Reserva confirmada. ¡Gracias por su compra!");
-      
+      try {
+        // Calcular el precio (misma lógica que ConfirmacionReserva)
+        const dias = calcularDias(formData.pickupDate, formData.returnDate);
+        let precioCalculado = calcularPrecio(dias, {
+          tarifaDiaria: selectedCar.tarifaDiaria,
+          tarifaSemanal: selectedCar.tarifaSemanal,
+          tarifaMensual: selectedCar.tarifaMensual,
+        });
+
+        // Aplicar descuento si hay código válido
+        if (codigoEstado.valido) {
+          precioCalculado = precioCalculado * (1 - codigoEstado.descuento / 100);
+        }
+
+        // Realizar la reserva con el precio calculado
+        const reservaRealizada = await realizarReserva(
+          formData, 
+          selectedCar.id, 
+          cardData.codigoDescuento.trim() || null,
+          precioCalculado
+        );
+        
+        console.log("Reserva realizada exitosamente:", reservaRealizada);
+        
+        // CAMBIO: Pasar el precio final calculado con descuento
+        const reservaConPrecio = {
+          ...reservaRealizada,
+          precioFinal: precioCalculado, // Precio con descuento aplicado
+          codigoDescuento: codigoEstado.valido ? cardData.codigoDescuento : null,
+          descuentoAplicado: codigoEstado.valido ? codigoEstado.descuento : 0
+        };
+        
+        onConfirmPayment(reservaConPrecio);
+        alert("¡Pago procesado correctamente! Reserva confirmada. ¡Gracias por su compra!");
+        
+      } catch (error) {
+        console.error("Error al realizar la reserva:", error);
+        alert("Error al procesar la reserva. Por favor, inténtalo de nuevo.");
+      }
     }
+  };
+
+  // Move helper functions BEFORE they are used
+  function calcularDias(fechaInicio, fechaFin) {
+      const inicio = new Date(fechaInicio);
+      const fin = new Date(fechaFin);
+      const diffTime = Math.abs(fin - inicio);
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  function calcularPrecio(dias, tarifas) {
+      if (!tarifas) return 0;
+      if (tarifas.tarifaMensual && dias >= 30) {
+        const meses = Math.floor(dias / 30);
+        const diasRestantes = dias % 30;
+        return meses * tarifas.tarifaMensual + calcularPrecio(diasRestantes, tarifas);
+      }
+      if (tarifas.tarifaSemanal && dias >= 7) {
+        const semanas = Math.floor(dias / 7);
+        const diasRestantes = dias % 7;
+        return semanas * tarifas.tarifaSemanal + calcularPrecio(diasRestantes, tarifas);
+      }
+      if (tarifas.tarifaDiaria) {
+        return dias * tarifas.tarifaDiaria;
+      }
+      return 0;
+  }
+
+  const verificarCodigo = async () => {
+    if (!cardData.codigoDescuento.trim()) {
+      setCodigoEstado({
+        verificado: false,
+        valido: false,
+        descuento: 0,
+        mensaje: "Introduce un código para verificar"
+      });
+      return;
+    }
+
+    setVerificandoCodigo(true);
+    try {
+      const codigoData = await verificarCodigoDescuento(cardData.codigoDescuento);
+      
+      if (codigoData) {
+        setCodigoEstado({
+          verificado: true,
+          valido: true,
+          descuento: codigoData.descuento,
+          mensaje: `¡Código válido! Descuento del ${codigoData.descuento}%`
+        });
+      } else {
+        setCodigoEstado({
+          verificado: true,
+          valido: false,
+          descuento: 0,
+          mensaje: "Código no válido o no existe"
+        });
+      }
+    } catch (error) {
+      setCodigoEstado({
+        verificado: true,
+        valido: false,
+        descuento: 0,
+        mensaje: "Error al verificar el código"
+      });
+    } finally {
+      setVerificandoCodigo(false);
+    }
+  };
+
+  // Reset verification when code changes
+  const handleCodigoChange = (e) => {
+    setCardData({
+      ...cardData,
+      codigoDescuento: e.target.value.toUpperCase()
+    });
+    
+    // Reset verification state
+    setCodigoEstado({
+      verificado: false,
+      valido: false,
+      descuento: 0,
+      mensaje: ""
+    });
   };
 
   return (
@@ -239,7 +377,65 @@ function FormularioPago({ onConfirmPayment }) {
                   className="payment-input"
                 />
               </Grid>
+              
+              {/* Campo de código de descuento con verificación */}
+              <Grid item xs={12}>
+                <Grid container spacing={1} alignItems="center">
+                  <Grid item xs={8}>
+                    <TextField
+                      label="Código de descuento (opcional)"
+                      name="codigoDescuento"
+                      value={cardData.codigoDescuento}
+                      onChange={handleCodigoChange}
+                      fullWidth
+                      margin="normal"
+                      placeholder="Introduce tu código de descuento"
+                      className="payment-input"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LocalOfferIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={4} style={{ paddingTop: '16px' }}>
+                    <Button
+                      variant="outlined"
+                      onClick={verificarCodigo}
+                      disabled={verificandoCodigo || !cardData.codigoDescuento.trim()}
+                      style={{ height: '56px', width: '100%' }}
+                      startIcon={codigoEstado.valido ? <CheckCircleIcon /> : null}
+                    >
+                      {verificandoCodigo ? "Verificando..." : "Comprobar"}
+                    </Button>
+                  </Grid>
+                </Grid>
+                
+                {/* Mostrar estado de verificación */}
+                {codigoEstado.verificado && (
+                  <Alert 
+                    severity={codigoEstado.valido ? "success" : "error"}
+                    style={{ marginTop: '8px' }}
+                  >
+                    {codigoEstado.mensaje}
+                  </Alert>
+                )}
+              </Grid>
             </Grid>
+            
+            {/* Resumen del precio basado en el código de descuento */}
+            {codigoEstado.valido && (
+              <div style={{ marginTop: '16px', padding: '16px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
+                <Typography variant="h6">Resumen del precio:</Typography>
+                <Typography>Precio original: {precioCalculado} €</Typography>
+                <Typography>Descuento ({codigoEstado.descuento}%): -{(precioCalculado * codigoEstado.descuento / 100).toFixed(2)} €</Typography>
+                <Typography variant="h6" style={{ color: 'green' }}>
+                  Precio final: {(precioCalculado * (1 - codigoEstado.descuento / 100)).toFixed(2)} €
+                </Typography>
+              </div>
+            )}
             
             <div className="submit-container">
               <button type="submit" className="submit-button">
@@ -253,18 +449,29 @@ function FormularioPago({ onConfirmPayment }) {
   );
 }
 
-// Definir PropTypes para validar las props
+// Definir PropTypes para validar las props - CORRECCIÓN
 FormularioPago.propTypes = {
-  onBack: PropTypes.func, // Definir onBack como una función opcional
+  onConfirmPayment: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  selectedCar: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    marca: PropTypes.string,
+    modelo: PropTypes.string,
+    tarifaDiaria: PropTypes.number.isRequired,    // Añadido
+    tarifaSemanal: PropTypes.number.isRequired,   // Añadido
+    tarifaMensual: PropTypes.number.isRequired,   // Añadido
+    transmision: PropTypes.string,
+    categoria: PropTypes.string,
+    puertas: PropTypes.number,
+    techoSolar: PropTypes.bool,
+    extras: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+  onBack: PropTypes.func, // Función opcional
 };
 
 // Valores por defecto para las props
 FormularioPago.defaultProps = {
   onBack: () => {}, // Función vacía como valor por defecto
-};
-
-FormularioPago.propTypes = {
-  onConfirmPayment: PropTypes.func.isRequired,
 };
 
 export default FormularioPago;
