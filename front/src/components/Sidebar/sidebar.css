@@ -1,0 +1,82 @@
+.sideBar {
+    width: 250px;
+    height: 100%;
+    background-color: #000000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex; /* Asegura que los hijos respeten el diseño */
+    flex-direction: column; /* Alinea los hijos en columna */
+}
+
+.titulo {
+    color: #ffffff;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;  
+}
+
+.listaSidebar {
+    width: 100%;
+    height: auto; /* Ajusta la altura al contenido */
+    margin: 0; /* Elimina márgenes que puedan causar desbordamiento */
+    padding: 0; /* Elimina padding adicional */
+    list-style: none; /* Elimina los estilos de lista predeterminados */
+}
+
+.fila {
+    height: 60px;
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    flex-direction: row; /* Alinea los hijos en fila */
+    padding: 10px;
+    cursor: pointer;
+    width: 100%; /* Asegúrate de que ocupe todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+}
+.icono {
+    
+    flex: 30%; /* Asegura que el icono ocupe el 30% del ancho */
+    display: grid;
+    place-items: center; /* Centra el contenido del icono */
+    color: #ffffff;
+
+}
+
+.texto {
+    flex: 70%; /* Asegura que el texto ocupe el 70% del ancho */
+    color: #ffffff;    
+}
+
+.sidebar-user-info {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.85rem; /* Más pequeño */
+    padding: 10px 0;
+    background: rgba(0,0,0,0.1);
+}
+
+.logout-button {
+    margin-left: 10px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 4px 10px; /* Más pequeño */
+    cursor: pointer;
+    font-size: 0.85rem; /* Más pequeño */
+    transition: background 0.2s;
+}
+.logout-button:hover {
+    background: #c0392b;
+}
+
+

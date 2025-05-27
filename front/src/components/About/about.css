@@ -1,0 +1,33 @@
+.about-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ocupa toda la altura de la ventana */
+    background-color: #f0f0f0; /* Fondo gris claro para contraste */
+    margin: 0;
+}
+
+.about-container {
+    background-color: #ffffff; /* Fondo blanco */
+    color: #333333; /* Texto en un tono oscuro para contraste */
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.about-container h1 {
+    font-size: 2.5rem;
+    color: #2c3e50; /* Color del título */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-container p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-align: justify; /* Justifica el texto */
+}

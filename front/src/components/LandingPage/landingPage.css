@@ -1,0 +1,49 @@
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url(./imagen.png); /* Cambia la ruta a la imagen de fondo */
+  background-size: cover; /* Ajusta la imagen para cubrir todo el contenedor */
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+}
+
+.landing-header {
+  font-size: 8rem;
+  color: white;
+  margin-bottom: 1rem;
+  display: flex; /* Flexbox para centrar */
+  flex-direction: column; /* Organiza los elementos en columna */
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  height: 100%; /* Asegúrate de que el contenedor tenga altura */
+}
+
+.cta-button {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.titulo{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+
+
+
+}
+
+.subtitulo{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 3rem;
+  color: white;
+  margin-top: 0.5rem;
+}
